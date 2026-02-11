@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Resultados - Evaluación</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gauge.js/1.3.7/gauge.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    /* Colores primarios */
+    --results-primary: #252525;
+    --results-primary-foreground: #1A1A1A;
+    
+    /* Colores secundarios */
+    --results-secondary: #1A1A1A;
+    --results-secondary-foreground: #FFFFFF;
+    
+    /* Colores de fondo (estilo shadcn) */
+    --results-background: #0B0B0B;
+    --results-foreground: #C8C8C8;
+    --results-card: #0B0B0B;
+    --results-card-foreground: #C8C8C8;
+    
+    /* Colores de bordes (estilo shadcn - sutiles) */
+    --results-border: #e4e4e7;
+    --results-ring: #252525;
+    
+    /* Colores de texto */
+    --results-muted: #f4f4f5;
+    --results-muted-foreground: #C8C8C8;
+    --results-accent: #f4f4f5;
+    --results-accent-foreground: #C8C8C8;
+    
+    /* Estados */
+    --results-destructive: #ef4444;
+    --results-destructive-foreground: #ffffff;
+    
+    /* Sombras estilo shadcn */
+    --results-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --results-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --results-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --results-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    
+    /* Tipografía */
+    --results-font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    --results-font-size-base: 16px;
+    
+    /* Radio de bordes */
+    --results-radius: 12px;
+    --results-radius-button: 12px;
+    
+    /* Espaciado */
+    --results-spacing-xs: 0.25rem;
+    --results-spacing-sm: 0.5rem;
+    --results-spacing-md: 0.75rem;
+    --results-spacing-lg: 1rem;
+    --results-spacing-xl: 1.5rem;
+    --results-spacing-2xl: 2rem;
+}
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    background-color: var(--results-card);
+  }
+  
+  body {
+    font-family: var(--results-font-family);
+    font-size: var(--results-font-size-base);
+    color: var(--results-foreground);
+    background-color: var(--results-card);
+    line-height: 1.5;
+    padding: max(var(--results-spacing-xl), env(safe-area-inset-top)) var(--results-spacing-lg) calc(var(--results-spacing-xl) + env(safe-area-inset-bottom));
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100svh;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body.ad-mode {
+    padding: 0;
+    background-color: var(--results-card);
+  }
+  
+
+  /* Hero Section - estilo shadcn/ui */
+  .hero-section {
+    background: var(--results-card);
+    border: 1px solid var(--results-border);
+    padding: var(--results-spacing-2xl);
+    border-radius: var(--results-radius);
+    box-shadow: var(--results-shadow-lg);
+    margin-bottom: var(--results-spacing-2xl);
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto var(--results-spacing-2xl);
+  }
+  
+  .hero-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--results-foreground);
+    margin-bottom: var(--results-spacing-xl);
+    letter-spacing: -0.02em;
+  }
+  
+  .hero-body {
+    display: flex;
+    align-items: center;
+    gap: var(--results-spacing-2xl);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .hero-left {
+    flex: 1;
+    min-width: 280px;
+    text-align: center;
+  }
+  
+  .hero-right {
+    flex: 1;
+    min-width: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .score-display {
+    font-size: 5rem;
+    font-weight: 700;
+    color: var(--results-primary);
+    line-height: 1;
+    margin-bottom: var(--results-spacing-lg);
+    letter-spacing: -0.05em;
+  }
+  
+  .score-message {
+    margin-top: var(--results-spacing-lg);
+  }
+  
+  .message-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--results-foreground);
+    margin-bottom: var(--results-spacing-sm);
+    line-height: 1.4;
+  }
+  
+  .message-text {
+    font-size: 0.875rem;
+    color: var(--results-muted-foreground);
+    line-height: 1.5;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  /* Estilos según rango de puntaje */
+  .score-low .score-display {
+    color: #10b981;
+  }
+  
+  .score-medium .score-display {
+    color: #f59e0b;
+  }
+  
+  .score-high .score-display {
+    color: var(--results-destructive);
+  }
+  
+  .score-low .message-title {
+    color: #10b981;
+  }
+  
+  .score-medium .message-title {
+    color: #f59e0b;
+  }
+  
+  .score-high .message-title {
+    color: var(--results-destructive);
+  }
+  
+  #heroGauge {
+    width: 280px;
+    height: 168px;
+  }
+  
+  @media (max-width: 768px) {
+    .hero-section {
+      padding: var(--results-spacing-xl);
+    }
+    
+    .hero-body {
+      flex-direction: column;
+      gap: var(--results-spacing-xl);
+    }
+    
+    .hero-left,
+    .hero-right {
+      min-width: 100%;
+    }
+    
+    .score-display {
+      font-size: 4rem;
+    }
+    
+    .hero-title {
+      font-size: 1.25rem;
+    }
+    
+    #heroGauge {
+      width: 260px;
+      height: 156px;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .hero-title {
+      font-size: 1.1rem;
+      margin-bottom: var(--results-spacing-lg);
+    }
+
+    .score-display {
+      font-size: 3.25rem;
+    }
+
+    .message-title {
+      font-size: 1rem;
+    }
+
+    .message-text {
+      font-size: 0.92rem;
+    }
+
+    #heroGauge {
+      width: 220px;
+      height: 132px;
+    }
+  }
+
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--results-spacing-xl) var(--results-spacing-lg);
+  }
+
+  .container.ad-mode {
+    max-width: 100%;
+    width: 100%;
+    min-height: 100dvh;
+    padding: max(0.75rem, env(safe-area-inset-top)) 0 calc(0.85rem + env(safe-area-inset-bottom));
+  }
+
+  .container.ad-mode .hero-section,
+  .container.ad-mode .recommendations-section,
+  .container.ad-mode .cta-section {
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  
+  .recommendations-section,
+  .cta-section {
+    background: var(--results-card);
+    border: 1px solid var(--results-border);
+    padding: var(--results-spacing-2xl);
+    border-radius: var(--results-radius);
+    box-shadow: var(--results-shadow);
+    margin-bottom: var(--results-spacing-xl);
+  }
+  
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--results-foreground);
+    margin-bottom: var(--results-spacing-xl);
+    text-align: center;
+    letter-spacing: -0.02em;
+  }
+  
+  .recommendations-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--results-spacing-md);
+  }
+  
+  .recommendation-item {
+    background: var(--results-background);
+    border: 1px solid var(--results-border);
+    padding: var(--results-spacing-xl);
+    border-radius: var(--results-radius);
+    border-left: 3px solid var(--results-primary);
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .recommendation-item:hover {
+    box-shadow: var(--results-shadow-md);
+    border-left-color: var(--results-primary);
+  }
+  
+  .recommendation-item h3 {
+    color: var(--results-foreground);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--results-spacing-sm);
+    line-height: 1.4;
+  }
+  
+  .recommendation-item p {
+    color: var(--results-muted-foreground);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  
+  .cta-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--results-spacing-md);
+    align-items: center;
+  }
+  
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 var(--results-spacing-xl);
+    border: 1px solid transparent;
+    border-radius: var(--results-radius-button);
+    font-size: 0.875rem;
+    font-family: var(--results-font-family);
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 200px;
+    white-space: nowrap;
+    touch-action: manipulation;
+    background: #ffffff;
+    color: #111111;
+    border-color: #ffffff;
+  }
+  
+  .cta-button.primary {
+    background: #ffffff;
+    color: #111111;
+    border: 1px solid #ffffff;
+    box-shadow: var(--results-shadow-sm);
+  }
+  
+  .cta-button.primary:hover {
+    background: #f3f4f6;
+    border-color: #f3f4f6;
+    color: #111111;
+    box-shadow: var(--results-shadow);
+  }
+  
+  .cta-button.secondary {
+    background: #ffffff;
+    color: #111111;
+    border: 1px solid #ffffff;
+  }
+  
+  .cta-button.secondary:hover {
+    background: #f3f4f6;
+    color: #111111;
+    border-color: #f3f4f6;
+  }
+
+  .final-contact-section {
+    margin-bottom: var(--results-spacing-xl);
+    text-align: center;
+  }
+  
+  @media (max-width: 768px) {
+    body {
+      padding: max(0.75rem, env(safe-area-inset-top)) var(--results-spacing-sm) calc(0.85rem + env(safe-area-inset-bottom));
+    }
+    
+    .container {
+      padding: var(--results-spacing-md) var(--results-spacing-xs);
+    }
+
+    .container.ad-mode {
+      padding: max(0.35rem, env(safe-area-inset-top)) 0 calc(0.4rem + env(safe-area-inset-bottom));
+    }
+    
+    .hero-section {
+      padding: var(--results-spacing-lg);
+    }
+    
+    .recommendations-section,
+    .cta-section {
+      padding: var(--results-spacing-lg);
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      margin-bottom: var(--results-spacing-lg);
+    }
+
+    .recommendation-item {
+      padding: var(--results-spacing-lg);
+    }
+
+    .recommendation-item h3 {
+      font-size: 0.98rem;
+    }
+
+    .recommendation-item p {
+      font-size: 0.92rem;
+    }
+    
+    .cta-list {
+      flex-direction: column;
+    }
+    
+    .cta-button {
+      width: 100%;
+      min-width: auto;
+      min-height: 50px;
+      font-size: 0.95rem;
+    }
+
+    .final-contact-section .cta-button {
+      width: 100%;
+    }
+  }
+  </style>
+</head>
+<body class="ad-mode">
+  <div class="container ad-mode">
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <div class="hero-content">
+        <h2 class="hero-title">Tu Resultado</h2>
+        <div class="hero-body">
+          <div class="hero-left">
+            <div class="score-display" id="heroScore">0/100</div>
+            <div class="score-message" id="heroMessage">
+              <div class="message-title">Calculando tu resultado...</div>
+              <div class="message-text">Por favor espera mientras procesamos tus respuestas.</div>
+            </div>
+          </div>
+          <div class="hero-right">
+            <canvas id="heroGauge"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- Sección de CTAs -->
+    <div class="cta-section" id="ctaSection">
+      <h2 class="section-title">Agenda tu valoración ahora</h2>
+      <div class="cta-list" id="ctaList"></div>
+    </div>
+
+    <!-- Sección de Recomendaciones -->
+    <div class="recommendations-section" id="recommendationsSection">
+      <h2 class="section-title">Recomendaciones Personalizadas</h2>
+      <div class="recommendations-list" id="recommendationsList"></div>
+    </div>
+
+    <!-- CTA final -->
+    <div class="final-contact-section" id="finalContactSection">
+      <a href="#" class="cta-button primary" id="finalContactButton">Ponte en contacto con un agente especializado</a>
+    </div>
+  </div>
+  
+  <script>
+
+    // Configuración de scoring
+    const scoringConfig = {
+  "max_score": 100,
+  "questions": [
+    {
+      "index": 1,
+      "weight": 5,
+      "options": {
+        "No": 0,
+        "No estoy muy seguro/a": 0.6,
+        "Sí": 1
+      }
+    },
+    {
+      "index": 2,
+      "weight": 10,
+      "options": {
+        "Menos de 6 meses": 0.2,
+        "Entre 6 meses y 2 años": 0.5,
+        "Entre 2 y 5 años": 0.7,
+        "Más de 5 años": 1,
+        "No lo recuerdo con exactitud": 0.6
+      }
+    },
+    {
+      "index": 3,
+      "weight": 8,
+      "options": {
+        "No": 0,
+        "Ocasional": 3,
+        "Frecuente": 6,
+        "Constante": 8
+      }
+    },
+    {
+      "index": 4,
+      "weight": 8,
+      "options": {
+        "No": 0,
+        "Leve": 3,
+        "Moderada": 6,
+        "Severa": 8
+      }
+    },
+    {
+      "index": 5,
+      "weight": 8,
+      "options": {
+        "No": 0,
+        "Pequeños": 4,
+        "Múltiples/grandes": 8
+      }
+    },
+    {
+      "index": 6,
+      "weight": 6,
+      "options": {
+        "No": 0,
+        "Leves": 3,
+        "Notorios": 6
+      }
+    },
+    {
+      "index": 7,
+      "weight": 10,
+      "options": {
+        "No": 0,
+        "Una vez": 6,
+        "Varias veces": 10
+      }
+    },
+    {
+      "index": 8,
+      "weight": 8,
+      "options": {
+        "No": 0,
+        "A veces": 3,
+        "Frecuente": 6,
+        "Siempre": 8
+      }
+    },
+    {
+      "index": 9,
+      "weight": 7,
+      "options": {
+        "No": 0,
+        "Leve": 3,
+        "Moderado": 5,
+        "Severo": 7
+      }
+    },
+    {
+      "index": 10,
+      "weight": 8,
+      "options": {
+        "No": 0,
+        "Ocasional": 3,
+        "Frecuente": 6,
+        "Diario": 8
+      }
+    },
+    {
+      "index": 11,
+      "weight": 6,
+      "options": {
+        "No": 0,
+        "Leve": 2,
+        "Moderada": 4,
+        "Abundante": 6
+      }
+    },
+    {
+      "index": 12,
+      "weight": 6,
+      "options": {
+        "No": 0,
+        "Leve": 2,
+        "Moderado": 4,
+        "Severo": 6
+      }
+    },
+    {
+      "index": 13,
+      "weight": 5,
+      "options": {
+        "No": 0,
+        "Ocasionales": 2,
+        "Frecuentes": 4,
+        "Severos": 6
+      }
+    },
+    {
+      "index": 14,
+      "weight": 10,
+      "options": {
+        "No": 0,
+        "Una vez": 4,
+        "Varias veces": 8
+      }
+    },
+    {
+      "index": 15,
+      "weight": 10,
+      "options": {
+        "No": 0,
+        "En estudio": 6,
+        "Sí": 10
+      }
+    },
+    {
+      "index": 16,
+      "weight": 8,
+      "options": {
+        "No": 0,
+        "Leve": 4,
+        "Claro empeoramiento": 8
+      }
+    },
+    {
+      "index": 17,
+      "weight": 10,
+      "options": {
+        "No": 0,
+        "Una vez": 6,
+        "Más de una vez": 10
+      }
+    },
+    {
+      "index": 18,
+      "weight": 6,
+      "options": {
+        "No": 0,
+        "Recomendada pero no realizada": 6,
+        "Ya realizada": 4
+      }
+    },
+    {
+      "index": 19,
+      "weight": 10,
+      "options": {
+        "No": 0,
+        "Sospecha": 5,
+        "Confirmado por médico": 10
+      }
+    },
+    {
+      "index": 20,
+      "weight": 10,
+      "options": {
+        "1": 0.1,
+        "2": 0.2,
+        "3": 0.3,
+        "4": 0.4,
+        "5": 0.5,
+        "6": 0.6,
+        "7": 0.7,
+        "8": 0.8,
+        "9": 0.9,
+        "10": 1
+      }
+    }
+  ]
+};
+    const redAlertTriggers = [{"question_index": 7, "answer": "Varias veces", "label": "Secreción recurrente o ulceración"}, {"question_index": 14, "answer": "Varias veces", "label": "Fiebre repetida sin causa"}, {"question_index": 15, "answer": "Sí", "label": "Diagnóstico autoinmune confirmado"}, {"question_index": 19, "answer": "Confirmado por médico", "label": "Migración confirmada"}, {"question_index": 17, "answer": "Más de una vez", "label": "Hospitalizaciones repetidas"}];
+
+    // Obtener banderas rojas activadas según respuestas reales
+    function getTriggeredRedAlerts(respuestasPorIndex) {
+      if (!redAlertTriggers || redAlertTriggers.length === 0) return [];
+      const triggered = [];
+      const seen = new Set();
+      for (let i = 0; i < redAlertTriggers.length; i++) {
+        const t = redAlertTriggers[i];
+        const answer = respuestasPorIndex && respuestasPorIndex[t.question_index];
+        if (answer === undefined || answer === null) continue;
+        const expected = String(t.answer || '').trim();
+        const label = String(t.label || expected).trim();
+        let matches = false;
+        if (Array.isArray(answer)) {
+          matches = answer.some(a => String(a).trim() === expected);
+        } else {
+          matches = String(answer).trim() === expected;
+        }
+        if (matches && !seen.has(label)) {
+          seen.add(label);
+          triggered.push(label);
+        }
+      }
+      return triggered;
+    }
+    
+    // Función para calcular el score
+    // respuestas es un array indexado por posición (0, 1, 2...)
+    // qConfig.index es el question_index del JSON (1, 2, 3...)
+    function calculateScore(respuestas, respuestasPorIndex) {
+      let totalScore = 0;
+      let maxPossibleScore = 0;
+      
+      scoringConfig.questions.forEach((qConfig) => {
+        // Ignorar preguntas con weight 0 (no contribuyen al score)
+        if (qConfig.weight === 0 || qConfig.weight === null || qConfig.weight === undefined) {
+          return;
+        }
+        
+        // Buscar la respuesta usando el question_index del config
+        const questionIndex = qConfig.index;
+        let respuesta = null;
+        
+        // Intentar obtener de respuestasPorIndex (objeto indexado por question_index)
+        if (respuestasPorIndex && respuestasPorIndex[questionIndex] !== undefined) {
+          respuesta = respuestasPorIndex[questionIndex];
+        } else {
+          // Fallback: buscar por posición en el array (index - 1 porque question_index es 1-based)
+          const arrayIndex = questionIndex - 1;
+          if (arrayIndex >= 0 && arrayIndex < respuestas.length) {
+            respuesta = respuestas[arrayIndex];
+          }
+        }
+        
+        // Para preguntas de selección múltiple, respuesta puede ser un array
+        // Si es array, usar el score máximo de las opciones seleccionadas
+        if (respuesta) {
+          let valorRespuesta = 0;
+          
+          if (Array.isArray(respuesta)) {
+            // Selección múltiple: usar el score máximo de las opciones seleccionadas
+            // Para preguntas con weight 0, ya se ignoraron arriba, así que esto no debería ejecutarse
+            // pero por si acaso, usamos el máximo
+            respuesta.forEach(resp => {
+              if (qConfig.options && qConfig.options[resp] !== undefined) {
+                valorRespuesta = Math.max(valorRespuesta, qConfig.options[resp]);
+              }
+            });
+          } else {
+            // Respuesta única
+            if (qConfig.options && qConfig.options[respuesta] !== undefined) {
+              valorRespuesta = qConfig.options[respuesta];
+            }
+          }
+          
+          if (valorRespuesta >= 0) {  // Permitir 0 también
+            totalScore += qConfig.weight * (valorRespuesta / 10);
+            maxPossibleScore += qConfig.weight;
+          }
+        }
+      });
+      
+      // Normalizar a 0-100
+      const score = maxPossibleScore > 0 ? (totalScore / maxPossibleScore) * 100 : 0;
+      return Math.round(score);
+    }
+    
+    // Función para determinar color según puntaje
+    function getScoreColor(score) {
+      if (score >= 0 && score <= 30) {
+        return '#10b981'; // Verde - Riesgo bajo
+      } else if (score >= 31 && score <= 60) {
+        return '#f59e0b'; // Amarillo - Riesgo intermedio
+      } else {
+        return '#ef4444'; // Rojo - Riesgo alto
+      }
+    }
+    
+    // Función para obtener mensaje del Hero según score
+    function getHeroMessage(score) {
+      if (score >= 0 && score <= 30) {
+        return {
+          className: 'score-low',
+          title: `Tu puntaje de evaluación es ${Math.round(score)}/100`,
+          text: 'Tus respuestas sugieren un riesgo relativamente bajo en este momento. Mantén seguimiento y revisa las recomendaciones para prevenir progresión.',
+          color: '#10b981'
+        };
+      } else if (score >= 31 && score <= 60) {
+        return {
+          className: 'score-medium',
+          title: `Tu puntaje de evaluación es ${Math.round(score)}/100`,
+          text: 'Tu evaluación muestra señales que requieren atención y seguimiento. Revisa las recomendaciones para actuar de forma oportuna.',
+          color: '#f59e0b'
+        };
+      } else {
+        return {
+          className: 'score-high',
+          title: `Tu puntaje de evaluación es ${Math.round(score)}/100`,
+          text: 'Tus respuestas indican riesgo elevado. Se recomienda valoración médica prioritaria y seguimiento especializado.',
+          color: '#ef4444'
+        };
+      }
+    }
+    
+    // Función para actualizar el Hero Section
+    function updateHeroScore(score, heroGauge) {
+      const heroScoreEl = document.getElementById('heroScore');
+      const heroMessageEl = document.getElementById('heroMessage');
+      const heroLeftEl = document.querySelector('.hero-left');
+      const messageTitleEl = heroMessageEl.querySelector('.message-title');
+      const messageTextEl = heroMessageEl.querySelector('.message-text');
+      
+      // Obtener mensaje según rango
+      const message = getHeroMessage(score);
+      
+      // Actualizar score (formato: 30/100)
+      heroScoreEl.textContent = Math.round(score) + '/100';
+      
+      // Actualizar clases y estilos
+      heroLeftEl.classList.remove('score-low', 'score-medium', 'score-high');
+      heroLeftEl.classList.add(message.className);
+      
+      // Actualizar mensajes
+      messageTitleEl.textContent = message.title;
+      messageTextEl.textContent = message.text;
+      
+      // Actualizar gauge
+      heroGauge.options.pointer.color = message.color;
+      heroGauge.set(score);
+    }
+    
+    // Inicializar cuando la página cargue
+    window.addEventListener('load', function() {
+      // Verificar que Gauge.js esté disponible
+      if (typeof Gauge === 'undefined') {
+        console.error('Gauge.js no está cargado');
+        return;
+      }
+      
+      // Leer respuestas del formulario
+      const formDataStr = localStorage.getItem('form_responses');
+      if (!formDataStr) {
+        console.error('No se encontraron respuestas del formulario');
+        // Mostrar mensaje de error visual
+        const heroLeft = document.querySelector('.hero-left');
+        const recommendationsSection = document.getElementById('recommendationsSection');
+        const ctaSection = document.getElementById('ctaSection');
+        if (heroLeft) {
+          heroLeft.innerHTML = `
+            <div class="score-display" style="color: var(--form-text-secondary); font-size: 3rem;">⚠️</div>
+            <div class="score-message">
+              <div class="message-title" style="color: var(--form-text-secondary);">No se encontraron respuestas</div>
+              <div class="message-description" style="color: var(--form-text-secondary);">
+                Por favor, completa el formulario primero.
+              </div>
+            </div>
+          `;
+        }
+        if (recommendationsSection) recommendationsSection.style.display = 'none';
+        if (ctaSection) ctaSection.style.display = 'none';
+        return;
+      }
+      
+      const formData = JSON.parse(formDataStr);
+      const respuestas = formData.respuestas || [];
+      
+      // Extraer respuestas indexadas por question_index (1-based desde el JSON)
+      // También crear un objeto para acceso rápido por question_index
+      const respuestasValores = [];
+      const respuestasPorIndex = {};
+      respuestas.forEach(r => {
+        const questionIndex = r.question_index !== undefined ? r.question_index : (respuestas.indexOf(r) + 1);
+        // La respuesta puede ser string (respuesta única) o array (selección múltiple)
+        // Para calcular score, si es array usamos el primer elemento o el máximo
+        const respuestaParaScore = Array.isArray(r.respuesta) ? r.respuesta[0] : r.respuesta;
+        respuestasValores.push(respuestaParaScore);
+        // Para evaluación de condiciones, mantener el formato original (puede ser array)
+        respuestasPorIndex[questionIndex] = r.respuesta;
+      });
+      
+      // Calcular score usando respuestasPorIndex (objeto indexado por question_index)
+      const score = calculateScore(respuestasValores, respuestasPorIndex);
+      
+      // Inicializar gauge
+      const heroTarget = document.getElementById('heroGauge');
+      heroTarget.width = 300;
+      heroTarget.height = 180;
+      
+      const heroOpts = {
+        angle: 0,
+        lineWidth: 0.4,
+        radiusScale: 0.7,
+        pointer: {
+          length: 0.55,
+          strokeWidth: 0.05,
+          color: getScoreColor(score)
+        },
+        limitMax: false,
+        limitMin: false,
+        strokeColor: '#e5e7eb',
+        generateGradient: false,
+        highDpiSupport: true,
+        staticZones: [
+          {strokeStyle: '#10b981', min: 0, max: 30},
+          {strokeStyle: '#f59e0b', min: 31, max: 60},
+          {strokeStyle: '#ef4444', min: 61, max: 100}
+        ]
+      };
+      
+      const heroGauge = new Gauge(heroTarget).setOptions(heroOpts);
+      heroGauge.maxValue = 100;
+      heroGauge.setMinValue(0);
+      heroGauge.animationSpeed = 32;
+
+      // Alerta roja: alto riesgo inmediato (independiente del puntaje total)
+      const triggeredRedAlerts = getTriggeredRedAlerts(respuestasPorIndex);
+      const isRedAlert = triggeredRedAlerts.length > 0;
+      if (isRedAlert) {
+        heroGauge.options.pointer.color = '#dc2626';
+        heroGauge.set(100);
+        const heroScoreEl = document.getElementById('heroScore');
+        const heroMessageEl = document.getElementById('heroMessage');
+        const heroLeftEl = document.querySelector('.hero-left');
+        if (heroScoreEl) heroScoreEl.textContent = '⚠️';
+        if (heroMessageEl) {
+          const titleEl = heroMessageEl.querySelector('.message-title');
+          const textEl = heroMessageEl.querySelector('.message-text');
+          const flagsText = triggeredRedAlerts.length > 1
+            ? `${triggeredRedAlerts.slice(0, -1).join(', ')} y ${triggeredRedAlerts[triggeredRedAlerts.length - 1]}`
+            : triggeredRedAlerts[0];
+          if (titleEl) titleEl.textContent = 'Alerta: alto riesgo inmediato';
+          if (textEl) textEl.textContent = `Según tus respuestas, se detectan señales de alto riesgo: ${flagsText}. Se recomienda valoración médica prioritaria.`;
+        }
+        if (heroLeftEl) {
+          heroLeftEl.classList.remove('score-low', 'score-medium', 'score-high');
+          heroLeftEl.classList.add('score-high');
+        }
+      } else {
+        // Actualizar Hero Section con el score normal
+        updateHeroScore(score, heroGauge);
+      }
+
+      // Renderizar recomendaciones y CTAs (pasar objeto indexado por question_index)
+      renderRecommendations(score, respuestasPorIndex);
+      renderCTAs(score, respuestasPorIndex);
+    });
+    
+    // Función para evaluar condiciones de plantillas
+    function evaluateConditions(conditions, score, respuestas) {
+      if (!conditions || conditions.length === 0) return true;
+      
+      // Si todas las condiciones deben cumplirse (AND), retornar true solo si todas pasan
+      for (let condition of conditions) {
+        let conditionPassed = false;
+        
+        // Evaluar rango de score
+        if (condition.score_range && Array.isArray(condition.score_range)) {
+          const [min, max] = condition.score_range;
+          if (score >= min && score <= max) {
+            conditionPassed = true;
+          } else {
+            return false; // Una condición falla, toda la condición falla
+          }
+        }
+        
+        // Evaluar respuesta específica de pregunta
+        if (condition.question_index !== undefined && condition.answer !== undefined) {
+          const questionIndex = condition.question_index;
+          const expectedAnswer = condition.answer;
+          // respuestas ahora es un objeto indexado por question_index (1-based)
+          let actualAnswer = null;
+          if (respuestas && typeof respuestas === 'object' && !Array.isArray(respuestas)) {
+            // Es un objeto indexado por question_index
+            actualAnswer = respuestas[questionIndex];
+          } else if (Array.isArray(respuestas) && respuestas[questionIndex] !== undefined) {
+            actualAnswer = respuestas[questionIndex];
+          }
+          
+          // Si actualAnswer es un array (selección múltiple), verificar si contiene la respuesta esperada
+          if (Array.isArray(actualAnswer)) {
+            // Para selección múltiple, verificar si alguna de las respuestas coincide
+            const matches = actualAnswer.some(resp => 
+              resp === expectedAnswer || 
+              String(resp).trim() === String(expectedAnswer).trim() ||
+              (resp && resp.includes && resp.includes(expectedAnswer)) ||
+              (expectedAnswer && String(expectedAnswer).includes && String(expectedAnswer).includes(resp))
+            );
+            if (matches) {
+              conditionPassed = true;
+            } else {
+              return false; // Ninguna respuesta coincide
+            }
+          } else {
+            // Comparar respuestas (considerar coincidencias exactas o parciales)
+            if (actualAnswer === expectedAnswer || 
+                String(actualAnswer).trim() === String(expectedAnswer).trim() ||
+                (actualAnswer && actualAnswer.includes && actualAnswer.includes(expectedAnswer)) ||
+                (expectedAnswer && String(expectedAnswer).includes && String(expectedAnswer).includes(actualAnswer))) {
+              conditionPassed = true;
+            } else {
+              return false; // La respuesta no coincide
+            }
+          }
+        }
+        
+        // Si la condición tiene algún criterio y no pasó, retornar false
+        if ((condition.score_range || (condition.question_index !== undefined && condition.answer !== undefined)) && !conditionPassed) {
+          return false;
+        }
+      }
+      return true;
+    }
+    
+    // Función para renderizar recomendaciones
+    function renderRecommendations(score, respuestas) {
+      const recommendationsList = document.getElementById('recommendationsList');
+      if (!recommendationsList) return;
+      
+      // Obtener plantillas del config
+      const recommendationTemplates = [{"trigger_conditions": [{"question_index": 1, "answer": "No"}], "title": "Aún no es claro", "description": "Si no estás seguro/a de qué te aplicaron, es útil reunir información básica: lugar, fecha aproximada, y cualquier documento o mensaje. Esto ayuda a orientar la valoración médica y a decidir qué estudios podrían ser necesarios.", "category": "question_1", "priority": 1, "option_score": 0.0, "question_weight": 5.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 1, "answer": "No estoy muy seguro/a"}], "title": "Sospecha parcial", "description": "Muchas personas no reciben información completa sobre el material aplicado. Si hay síntomas locales o generales, una consulta especializada puede aclarar la situación con examen físico y, si corresponde, imágenes o pruebas complementarias.", "category": "question_1", "priority": 30, "option_score": 0.6, "question_weight": 5.0, "risk_score": 3.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 1, "answer": "Sí"}], "title": "Exposición probable", "description": "Tener claridad sobre una sustancia desconocida permite evaluar riesgos de manera más directa. Si presentas síntomas, una valoración médica puede ayudar a identificar complicaciones locales y signos de inflamación sistémica.", "category": "question_1", "priority": 50, "option_score": 1.0, "question_weight": 5.0, "risk_score": 5.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 2, "answer": "Menos de 6 meses"}], "title": "Periodo reciente", "description": "En los primeros meses pueden aparecer inflamación, dolor y cambios de la piel. Si los síntomas son persistentes o progresivos, conviene una valoración para descartar infección, reacción inflamatoria u otras complicaciones.", "category": "question_2", "priority": 20, "option_score": 0.2, "question_weight": 10.0, "risk_score": 2.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 2, "answer": "Entre 6 meses y 2 años"}], "title": "Riesgo de evolución", "description": "En este rango pueden aparecer nódulos, endurecimiento o síntomas generales que antes no existían. Un control médico puede identificar signos tempranos de complicación y orientar el manejo.", "category": "question_2", "priority": 50, "option_score": 0.5, "question_weight": 10.0, "risk_score": 5.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 2, "answer": "Entre 2 y 5 años"}], "title": "Posibles complicaciones tardías", "description": "Algunas complicaciones se manifiestan años después, incluyendo síntomas locales persistentes y signos sistémicos. Si notas empeoramiento, es razonable priorizar una valoración especializada.", "category": "question_2", "priority": 70, "option_score": 0.7, "question_weight": 10.0, "risk_score": 7.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 2, "answer": "Más de 5 años"}], "title": "Complicaciones de larga evolución", "description": "Con el tiempo puede aumentar el riesgo de inflamación crónica, migración del material y síntomas sistémicos. Una evaluación completa puede ayudar a definir la severidad y las opciones de tratamiento.", "category": "question_2", "priority": 100, "option_score": 1.0, "question_weight": 10.0, "risk_score": 10.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 2, "answer": "No lo recuerdo con exactitud"}], "title": "Fecha incierta", "description": "No recordar la fecha es común. Aun así, los síntomas actuales son la prioridad: si hay dolor, secreción, fiebre o empeoramiento, es recomendable valoración médica para determinar el siguiente paso.", "category": "question_2", "priority": 60, "option_score": 0.6, "question_weight": 10.0, "risk_score": 6.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 3, "answer": "No"}], "title": "Sin dolor local", "description": "La ausencia de dolor es una señal favorable, pero no descarta otras complicaciones. Si hay cambios visibles o síntomas generales, conviene mantener seguimiento.", "category": "question_3", "priority": 3, "option_score": 0.0, "question_weight": 8.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 3, "answer": "Ocasional"}], "title": "Dolor intermitente", "description": "El dolor ocasional puede relacionarse con inflamación leve o sensibilidad local. Si aumenta en frecuencia o intensidad, se recomienda evaluación para identificar su causa.", "category": "question_3", "priority": 240, "option_score": 3.0, "question_weight": 8.0, "risk_score": 24.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 3, "answer": "Frecuente"}], "title": "Dolor persistente", "description": "El dolor frecuente sugiere inflamación sostenida o reacción local. Una valoración puede ayudar a determinar si hay nódulos, migración u otras complicaciones asociadas.", "category": "question_3", "priority": 480, "option_score": 6.0, "question_weight": 8.0, "risk_score": 48.0, "concern_level": "high"}, {"trigger_conditions": [{"question_index": 3, "answer": "Constante"}], "title": "Dolor constante", "description": "El dolor constante es una señal de alerta clínica que amerita evaluación prioritaria. Puede asociarse a inflamación importante, compromiso tisular o complicaciones que requieren manejo médico.", "category": "question_3", "priority": 640, "option_score": 8.0, "question_weight": 8.0, "risk_score": 64.0, "concern_level": "critical"}, {"trigger_conditions": [{"question_index": 4, "answer": "No"}], "title": "Sin inflamación evidente", "description": "No observar inflamación es positivo. Aun así, si existen otros síntomas locales o generales, una revisión médica puede orientar el riesgo real.", "category": "question_4", "priority": 4, "option_score": 0.0, "question_weight": 8.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 4, "answer": "Leve"}], "title": "Inflamación leve", "description": "La inflamación leve puede ser intermitente y asociarse a irritación local. Si persiste o progresa, conviene una evaluación para descartar complicaciones.", "category": "question_4", "priority": 240, "option_score": 3.0, "question_weight": 8.0, "risk_score": 24.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 4, "answer": "Moderada"}], "title": "Inflamación moderada", "description": "La inflamación moderada sostenida puede indicar reacción inflamatoria crónica. Una valoración clínica puede ayudar a decidir si se requieren estudios por imágenes.", "category": "question_4", "priority": 480, "option_score": 6.0, "question_weight": 8.0, "risk_score": 48.0, "concern_level": "high"}, {"trigger_conditions": [{"question_index": 4, "answer": "Severa"}], "title": "Inflamación severa", "description": "Inflamación severa es una señal de alarma, especialmente si hay dolor, calor local o cambios en la piel. Recomendable atención médica prioritaria.", "category": "question_4", "priority": 640, "option_score": 8.0, "question_weight": 8.0, "risk_score": 64.0, "concern_level": "critical"}, {"trigger_conditions": [{"question_index": 5, "answer": "No"}], "title": "Sin nódulos aparentes", "description": "No detectar nódulos reduce la probabilidad de reacción local marcada. Aun así, cambios sutiles pueden requerir exploración clínica si hay síntomas.", "category": "question_5", "priority": 5, "option_score": 0.0, "question_weight": 8.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 5, "answer": "Pequeños"}], "title": "Nódulos pequeños", "description": "Los nódulos pequeños pueden corresponder a inflamación localizada. Una valoración médica puede determinar su naturaleza y si hay signos de progresión.", "category": "question_5", "priority": 320, "option_score": 4.0, "question_weight": 8.0, "risk_score": 32.0, "concern_level": "medium"}, {"trigger_conditions": [{"question_index": 5, "answer": "Múltiples/grandes"}], "title": "Nódulos múltiples/grandes", "description": "La presencia de múltiples nódulos o masas grandes sugiere compromiso local significativo. Es recomendable evaluación especializada para estimar extensión y opciones de manejo.", "category": "question_5", "priority": 640, "option_score": 8.0, "question_weight": 8.0, "risk_score": 64.0, "concern_level": "critical"}, {"trigger_conditions": [{"question_index": 6, "answer": "No"}], "title": "Sin cambios visibles", "description": "No hay señales cutáneas evidentes. Mantén vigilancia si aparece dolor, inflamación o sensibilidad, ya que los cambios pueden ser progresivos.", "category": "question_6", "priority": 6, "option_score": 0.0, "question_weight": 6.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 6, "answer": "Leves"}], "title": "Cambios leves", "description": "Los cambios leves pueden relacionarse con irritación o inflamación superficial. Si aumentan o se acompañan de dolor, conviene valoración médica.", "category": "question_6", "priority": 180, "option_score": 3.0, "question_weight": 6.0, "risk_score": 18.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 6, "answer": "Notorios"}], "title": "Cambios notorios", "description": "Cambios notorios en la piel pueden indicar inflamación importante o compromiso de tejidos. Se recomienda evaluación prioritaria, especialmente si hay calor local o dolor constante.", "category": "question_6", "priority": 360, "option_score": 6.0, "question_weight": 6.0, "risk_score": 36.0, "concern_level": "high"}, {"trigger_conditions": [{"question_index": 7, "answer": "No"}], "title": "Sin secreción", "description": "La ausencia de secreción es un buen signo. Si hay dolor o inflamación, aún puede existir reacción local; por eso se recomienda seguimiento si los síntomas persisten.", "category": "question_7", "priority": 7, "option_score": 0.0, "question_weight": 10.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 7, "answer": "Una vez"}], "title": "Episodio aislado", "description": "Un episodio de secreción o ulceración puede asociarse a inflamación o infección. Es recomendable evaluación médica para descartar complicaciones que requieran tratamiento.", "category": "question_7", "priority": 600, "option_score": 6.0, "question_weight": 10.0, "risk_score": 60.0, "concern_level": "high"}, {"trigger_conditions": [{"question_index": 7, "answer": "Varias veces"}], "title": "Alerta clínica", "description": "Secreción o ulceración recurrente es una señal de alarma que amerita valoración prioritaria. Puede indicar infección, reacción inflamatoria severa o compromiso tisular que requiere manejo especializado.", "category": "question_7", "priority": 1000, "option_score": 10.0, "question_weight": 10.0, "risk_score": 100.0, "concern_level": "critical"}, {"trigger_conditions": [{"question_index": 8, "answer": "No"}], "title": "Energía conservada", "description": "No reportar fatiga intensa es positivo. Si aparecen otros síntomas sistémicos, conviene valorarlos en conjunto para orientar el riesgo.", "category": "question_8", "priority": 8, "option_score": 0.0, "question_weight": 8.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 8, "answer": "A veces"}], "title": "Fatiga ocasional", "description": "La fatiga ocasional puede tener múltiples causas. Si se acompaña de dolor muscular, articular o trastornos del sueño, puede ser útil una valoración médica integral.", "category": "question_8", "priority": 240, "option_score": 3.0, "question_weight": 8.0, "risk_score": 24.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 8, "answer": "Frecuente"}], "title": "Fatiga frecuente", "description": "La fatiga frecuente puede ser compatible con inflamación sistémica o trastornos asociados. Una evaluación puede orientar estudios y descartar otras causas.", "category": "question_8", "priority": 480, "option_score": 6.0, "question_weight": 8.0, "risk_score": 48.0, "concern_level": "high"}, {"trigger_conditions": [{"question_index": 8, "answer": "Siempre"}], "title": "Fatiga marcada", "description": "Fatiga constante que no mejora con descanso es una señal importante. Se recomienda valoración médica para identificar causas inflamatorias, autoinmunes u otras condiciones tratables.", "category": "question_8", "priority": 640, "option_score": 8.0, "question_weight": 8.0, "risk_score": 64.0, "concern_level": "critical"}, {"trigger_conditions": [{"question_index": 9, "answer": "No"}], "title": "Sin mialgias", "description": "No presentar dolor muscular generalizado reduce el componente sistémico. Mantén vigilancia si aparecen otros síntomas como fatiga, fiebre o dolor articular.", "category": "question_9", "priority": 9, "option_score": 0.0, "question_weight": 7.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 9, "answer": "Leve"}], "title": "Mialgias leves", "description": "Dolores musculares leves pueden ser inespecíficos. Si son persistentes y se acompañan de fatiga o dolor articular, conviene valoración médica.", "category": "question_9", "priority": 210, "option_score": 3.0, "question_weight": 7.0, "risk_score": 21.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 9, "answer": "Moderado"}], "title": "Mialgias moderadas", "description": "Dolor muscular moderado y sostenido puede ser compatible con un proceso inflamatorio. Un enfoque clínico integral ayuda a orientar el diagnóstico diferencial.", "category": "question_9", "priority": 350, "option_score": 5.0, "question_weight": 7.0, "risk_score": 35.0, "concern_level": "medium"}, {"trigger_conditions": [{"question_index": 9, "answer": "Severo"}], "title": "Mialgias severas", "description": "Dolor muscular severo limita la funcionalidad y amerita evaluación. Es importante descartar causas inflamatorias y autoinmunes, especialmente si hay otros síntomas sistémicos.", "category": "question_9", "priority": 490, "option_score": 7.0, "question_weight": 7.0, "risk_score": 49.0, "concern_level": "high"}, {"trigger_conditions": [{"question_index": 10, "answer": "No"}], "title": "Sin artralgias", "description": "La ausencia de dolor articular es favorable. Si aparece rigidez matutina, hinchazón o dolor persistente, conviene valorarlo a tiempo.", "category": "question_10", "priority": 10, "option_score": 0.0, "question_weight": 8.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 10, "answer": "Ocasional"}], "title": "Artralgias ocasionales", "description": "El dolor articular ocasional puede tener múltiples causas. Si aumenta o se hace recurrente junto a fatiga, conviene evaluación clínica.", "category": "question_10", "priority": 240, "option_score": 3.0, "question_weight": 8.0, "risk_score": 24.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 10, "answer": "Frecuente"}], "title": "Artralgias frecuentes", "description": "Dolor articular frecuente puede sugerir inflamación sistémica. Un especialista puede orientar estudios y evaluar signos de enfermedad inflamatoria.", "category": "question_10", "priority": 480, "option_score": 6.0, "question_weight": 8.0, "risk_score": 48.0, "concern_level": "high"}, {"trigger_conditions": [{"question_index": 10, "answer": "Diario"}], "title": "Artralgias diarias", "description": "Dolor articular diario afecta calidad de vida y requiere valoración médica. Es importante descartar procesos autoinmunes o inflamatorios y plantear manejo oportuno.", "category": "question_10", "priority": 640, "option_score": 8.0, "question_weight": 8.0, "risk_score": 64.0, "concern_level": "critical"}, {"trigger_conditions": [{"question_index": 11, "answer": "No"}], "title": "Sin caída notable", "description": "No reportar caída de cabello reduce un signo sistémico frecuente. Si aparecen otros síntomas generales, conviene valorarlos en conjunto.", "category": "question_11", "priority": 11, "option_score": 0.0, "question_weight": 6.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 11, "answer": "Leve"}], "title": "Caída leve", "description": "La caída leve puede asociarse a estrés, cambios hormonales u otras causas. Si se acompaña de fatiga, dolor articular o problemas de piel, conviene evaluación.", "category": "question_11", "priority": 120, "option_score": 2.0, "question_weight": 6.0, "risk_score": 12.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 11, "answer": "Moderada"}], "title": "Caída moderada", "description": "Caída moderada y persistente puede ser un signo sistémico. Es recomendable valoración para descartar deficiencias y procesos inflamatorios.", "category": "question_11", "priority": 240, "option_score": 4.0, "question_weight": 6.0, "risk_score": 24.0, "concern_level": "medium"}, {"trigger_conditions": [{"question_index": 11, "answer": "Abundante"}], "title": "Caída abundante", "description": "Caída abundante es una señal importante, especialmente si coincide con fatiga y dolores. Se recomienda evaluación médica integral para orientar causas tratables.", "category": "question_11", "priority": 360, "option_score": 6.0, "question_weight": 6.0, "risk_score": 36.0, "concern_level": "high"}, {"trigger_conditions": [{"question_index": 12, "answer": "No"}], "title": "Cognición preservada", "description": "No reportar alteraciones cognitivas es favorable. Si aparecen fatiga intensa, dolor o trastornos del sueño, pueden influir en la concentración; conviene valorarlos.", "category": "question_12", "priority": 12, "option_score": 0.0, "question_weight": 6.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 12, "answer": "Leve"}], "title": "Dificultades leves", "description": "Problemas leves de memoria o concentración pueden asociarse a fatiga, estrés o sueño. Si persisten o empeoran, conviene evaluación para descartar causas tratables.", "category": "question_12", "priority": 120, "option_score": 2.0, "question_weight": 6.0, "risk_score": 12.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 12, "answer": "Moderado"}], "title": "Dificultades moderadas", "description": "Alteraciones moderadas de memoria o concentración pueden ser parte de un cuadro sistémico. Una valoración médica ayuda a orientar estudios y manejo.", "category": "question_12", "priority": 240, "option_score": 4.0, "question_weight": 6.0, "risk_score": 24.0, "concern_level": "medium"}, {"trigger_conditions": [{"question_index": 12, "answer": "Severo"}], "title": "Dificultades severas", "description": "Problemas severos de memoria o concentración afectan la vida diaria y requieren evaluación. Es importante descartar causas inflamatorias, metabólicas o neurológicas.", "category": "question_12", "priority": 360, "option_score": 6.0, "question_weight": 6.0, "risk_score": 36.0, "concern_level": "high"}, {"trigger_conditions": [{"question_index": 13, "answer": "No"}], "title": "Sueño adecuado", "description": "Dormir bien favorece la recuperación y reduce el impacto del estrés. Si aparecen otros síntomas sistémicos, mantén hábitos de sueño saludables.", "category": "question_13", "priority": 13, "option_score": 0.0, "question_weight": 5.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 13, "answer": "Ocasionales"}], "title": "Trastornos ocasionales", "description": "Alteraciones ocasionales del sueño pueden deberse a dolor, ansiedad o estrés. Si se hacen frecuentes o se acompañan de fatiga marcada, conviene valoración.", "category": "question_13", "priority": 100, "option_score": 2.0, "question_weight": 5.0, "risk_score": 10.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 13, "answer": "Frecuentes"}], "title": "Trastornos frecuentes", "description": "Problemas frecuentes de sueño pueden agravar fatiga y dolor. Una evaluación integral puede orientar medidas de higiene del sueño y descartar causas médicas.", "category": "question_13", "priority": 200, "option_score": 4.0, "question_weight": 5.0, "risk_score": 20.0, "concern_level": "medium"}, {"trigger_conditions": [{"question_index": 13, "answer": "Severos"}], "title": "Trastornos severos", "description": "Trastornos severos del sueño afectan la calidad de vida y la recuperación. Se recomienda valoración médica para identificar causas y plantear tratamiento.", "category": "question_13", "priority": 300, "option_score": 6.0, "question_weight": 5.0, "risk_score": 30.0, "concern_level": "high"}, {"trigger_conditions": [{"question_index": 14, "answer": "No"}], "title": "Sin fiebre recurrente", "description": "No presentar fiebre recurrente es favorable. Si en el futuro aparece fiebre sin causa clara, conviene consultar para descartar infección o reacción inflamatoria.", "category": "question_14", "priority": 14, "option_score": 0.0, "question_weight": 10.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 14, "answer": "Una vez"}], "title": "Un episodio de fiebre", "description": "Un episodio aislado de fiebre puede tener múltiples causas. Si se repite o se acompaña de otros síntomas sistémicos, es importante valoración médica.", "category": "question_14", "priority": 400, "option_score": 4.0, "question_weight": 10.0, "risk_score": 40.0, "concern_level": "medium"}, {"trigger_conditions": [{"question_index": 14, "answer": "Varias veces"}], "title": "Fiebre recurrente", "description": "Fiebre recurrente sin causa aparente es una señal de alarma. Se recomienda valoración médica urgente para descartar infección, reacción al material o proceso inflamatorio sistémico.", "category": "question_14", "priority": 800, "option_score": 8.0, "question_weight": 10.0, "risk_score": 80.0, "concern_level": "critical"}, {"trigger_conditions": [{"question_index": 15, "answer": "No"}], "title": "Sin diagnóstico autoinmune", "description": "No tener diagnóstico autoinmune posterior es favorable. Si hay síntomas sugestivos (fatiga, dolor articular, alteraciones cutáneas), conviene valoración para descartar o confirmar.", "category": "question_15", "priority": 15, "option_score": 0.0, "question_weight": 10.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 15, "answer": "En estudio"}], "title": "Estudio en curso", "description": "Si hay sospecha de enfermedad autoinmune en estudio, es importante completar la evaluación y seguir las indicaciones del especialista. La asociación con biopolímeros debe ser valorada por el médico.", "category": "question_15", "priority": 600, "option_score": 6.0, "question_weight": 10.0, "risk_score": 60.0, "concern_level": "high"}, {"trigger_conditions": [{"question_index": 15, "answer": "Sí"}], "title": "Diagnóstico autoinmune", "description": "Un diagnóstico autoinmune posterior a la aplicación requiere manejo especializado. Se recomienda seguimiento con reumatología o el especialista indicado y valorar con el médico la relación con el material aplicado.", "category": "question_15", "priority": 1000, "option_score": 10.0, "question_weight": 10.0, "risk_score": 100.0, "concern_level": "critical"}, {"trigger_conditions": [{"question_index": 16, "answer": "No"}], "title": "Sin progresión", "description": "La ausencia de empeoramiento es un signo favorable. Aun así, es útil mantener seguimiento si hubo aplicación de sustancia desconocida.", "category": "question_16", "priority": 16, "option_score": 0.0, "question_weight": 8.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 16, "answer": "Leve"}], "title": "Progresión leve", "description": "Un empeoramiento leve sugiere evolución del proceso local o sistémico. Una valoración puede ayudar a detener la progresión y aliviar síntomas.", "category": "question_16", "priority": 320, "option_score": 4.0, "question_weight": 8.0, "risk_score": 32.0, "concern_level": "medium"}, {"trigger_conditions": [{"question_index": 16, "answer": "Claro empeoramiento"}], "title": "Progresión evidente", "description": "Empeoramiento claro es una señal importante que amerita evaluación prioritaria. Identificar la causa y la extensión ayuda a definir manejo y reducir complicaciones.", "category": "question_16", "priority": 640, "option_score": 8.0, "question_weight": 8.0, "risk_score": 64.0, "concern_level": "critical"}, {"trigger_conditions": [{"question_index": 17, "answer": "No"}], "title": "Sin hospitalizaciones", "description": "No haber requerido hospitalización es favorable. Sin embargo, si existen señales de alarma, una valoración especializada sigue siendo recomendable.", "category": "question_17", "priority": 17, "option_score": 0.0, "question_weight": 10.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 17, "answer": "Una vez"}], "title": "Complicación significativa", "description": "Una hospitalización sugiere un evento clínico relevante. Es importante revisar causas, tratamientos previos y evolución para decidir el siguiente paso.", "category": "question_17", "priority": 600, "option_score": 6.0, "question_weight": 10.0, "risk_score": 60.0, "concern_level": "high"}, {"trigger_conditions": [{"question_index": 17, "answer": "Más de una vez"}], "title": "Alta prioridad", "description": "Hospitalizaciones repetidas indican alta complejidad clínica. Se recomienda evaluación prioritaria con equipo especializado para plan diagnóstico y terapéutico integral.", "category": "question_17", "priority": 1000, "option_score": 10.0, "question_weight": 10.0, "risk_score": 100.0, "concern_level": "critical"}, {"trigger_conditions": [{"question_index": 18, "answer": "No"}], "title": "Sin recomendación quirúrgica", "description": "No tener recomendación quirúrgica puede indicar un cuadro menos evidente o no valorado aún. Si hay síntomas persistentes, conviene una evaluación específica.", "category": "question_18", "priority": 18, "option_score": 0.0, "question_weight": 6.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 18, "answer": "Recomendada pero no realizada"}], "title": "Valoración quirúrgica pendiente", "description": "Si ya se recomendó cirugía, es importante entender el motivo y el plan. Una segunda opinión especializada puede aclarar riesgos, beneficios y expectativas realistas.", "category": "question_18", "priority": 360, "option_score": 6.0, "question_weight": 6.0, "risk_score": 36.0, "concern_level": "high"}, {"trigger_conditions": [{"question_index": 18, "answer": "Ya realizada"}], "title": "Seguimiento post-tratamiento", "description": "Tras una intervención, es clave el seguimiento clínico para evaluar mejoría y detectar síntomas persistentes. Si continúas con molestias, conviene reevaluación integral.", "category": "question_18", "priority": 240, "option_score": 4.0, "question_weight": 6.0, "risk_score": 24.0, "concern_level": "medium"}, {"trigger_conditions": [{"question_index": 19, "answer": "No"}], "title": "Sin migración aparente", "description": "No notar migración es positivo. Si hay nódulos, dolor o cambios en otras zonas, conviene valoración para descartar migración no evidente.", "category": "question_19", "priority": 19, "option_score": 0.0, "question_weight": 10.0, "risk_score": 0.0, "concern_level": "none"}, {"trigger_conditions": [{"question_index": 19, "answer": "Sospecha"}], "title": "Posible migración", "description": "La migración puede manifestarse con bultos, dolor o cambios de forma en zonas cercanas o distantes. Una valoración clínica e imágenes pueden confirmar o descartar.", "category": "question_19", "priority": 500, "option_score": 5.0, "question_weight": 10.0, "risk_score": 50.0, "concern_level": "medium"}, {"trigger_conditions": [{"question_index": 19, "answer": "Confirmado por médico"}], "title": "Señal de alta complejidad", "description": "La migración confirmada sugiere compromiso extendido. Se recomienda evaluación especializada para definir severidad, riesgos y opciones de manejo.", "category": "question_19", "priority": 1000, "option_score": 10.0, "question_weight": 10.0, "risk_score": 100.0, "concern_level": "critical"}, {"trigger_conditions": [{"question_index": 20, "answer": "1"}], "title": "Impacto mínimo", "description": "Si el impacto es mínimo, puede ser buen momento para una valoración preventiva y educación sobre señales de alarma. Así se detectan cambios a tiempo y se planifica seguimiento.", "category": "question_20", "priority": 10, "option_score": 0.1, "question_weight": 10.0, "risk_score": 1.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 20, "answer": "2"}], "title": "Impacto bajo", "description": "Un impacto bajo sugiere síntomas controlables, pero conviene vigilar evolución. Considera una consulta si aparecen nuevos síntomas o si los actuales aumentan.", "category": "question_20", "priority": 20, "option_score": 0.2, "question_weight": 10.0, "risk_score": 2.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 20, "answer": "3"}], "title": "Impacto leve", "description": "Un impacto leve puede relacionarse con molestias intermitentes. Un plan de evaluación puede ayudarte a entender causas y prevenir progresión.", "category": "question_20", "priority": 30, "option_score": 0.3, "question_weight": 10.0, "risk_score": 3.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 20, "answer": "4"}], "title": "Impacto leve-moderado", "description": "Cuando el impacto comienza a sentirse en actividades diarias, vale la pena una valoración más completa. El objetivo es identificar factores tratables y mejorar bienestar.", "category": "question_20", "priority": 40, "option_score": 0.4, "question_weight": 10.0, "risk_score": 4.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 20, "answer": "5"}], "title": "Impacto moderado", "description": "Impacto moderado sugiere necesidad de un plan de manejo. Una consulta especializada puede orientar estudios, opciones terapéuticas y seguimiento adecuado.", "category": "question_20", "priority": 50, "option_score": 0.5, "question_weight": 10.0, "risk_score": 5.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 20, "answer": "6"}], "title": "Impacto moderado-alto", "description": "Si el impacto es moderado-alto, suele existir una carga física o emocional significativa. Es recomendable valoración para definir prioridades de atención y tratamiento.", "category": "question_20", "priority": 60, "option_score": 0.6, "question_weight": 10.0, "risk_score": 6.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 20, "answer": "7"}], "title": "Impacto alto", "description": "Un impacto alto indica afectación clara de la vida diaria. Una evaluación integral puede ayudar a identificar complicaciones y construir un plan de manejo realista.", "category": "question_20", "priority": 70, "option_score": 0.7, "question_weight": 10.0, "risk_score": 7.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 20, "answer": "8"}], "title": "Impacto muy alto", "description": "Impacto muy alto sugiere necesidad de atención prioritaria. Es importante valorar tanto síntomas locales como sistémicos para tomar decisiones informadas.", "category": "question_20", "priority": 80, "option_score": 0.8, "question_weight": 10.0, "risk_score": 8.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 20, "answer": "9"}], "title": "Impacto severo", "description": "Impacto severo suele acompañarse de síntomas persistentes y limitantes. Se recomienda evaluación prioritaria con especialistas para definir el abordaje más seguro.", "category": "question_20", "priority": 90, "option_score": 0.9, "question_weight": 10.0, "risk_score": 9.0, "concern_level": "low"}, {"trigger_conditions": [{"question_index": 20, "answer": "10"}], "title": "Impacto crítico", "description": "Si el impacto es crítico, es importante buscar valoración médica prioritaria. Un equipo especializado puede orientar el diagnóstico, aliviar síntomas y reducir riesgos de complicaciones.", "category": "question_20", "priority": 100, "option_score": 1.0, "question_weight": 10.0, "risk_score": 10.0, "concern_level": "low"}];
+      
+      // Filtrar recomendaciones que coinciden
+      // Si hay recomendaciones con question_index, mostrar TODAS las que coincidan (una por cada respuesta)
+      // Si solo hay recomendaciones con score_range, usar lógica anterior
+      const hasQuestionBasedRecs = recommendationTemplates.some(t => 
+        t.trigger_conditions && t.trigger_conditions.some(c => c.question_index !== undefined)
+      );
+      
+      let matchingRecommendations = [];
+      
+      if (hasQuestionBasedRecs) {
+        // Modo: recomendaciones por pregunta - mostrar solo las más preocupantes (máx 5)
+        matchingRecommendations = recommendationTemplates.filter(template => {
+          return evaluateConditions(template.trigger_conditions || [], score, respuestas);
+        });
+
+        // Deduplicar por categoría/pregunta, quedándose con la más severa
+        const byCategory = new Map();
+        matchingRecommendations.forEach(rec => {
+          const key = rec.category || rec.title || JSON.stringify(rec.trigger_conditions || []);
+          const existing = byCategory.get(key);
+          const recRisk = Number(rec.risk_score || 0);
+          const existingRisk = existing ? Number(existing.risk_score || 0) : -1;
+          if (!existing || recRisk > existingRisk) {
+            byCategory.set(key, rec);
+          }
+        });
+        matchingRecommendations = Array.from(byCategory.values());
+
+        // Filtrar a solo recomendaciones preocupantes (banderas relevantes)
+        let concerning = matchingRecommendations.filter(rec => {
+          const optionScore = Number(rec.option_score || 0);
+          const level = String(rec.concern_level || '').toLowerCase();
+          return optionScore >= 4 || level === 'high' || level === 'critical';
+        });
+
+        // Fallback: si no hay preocupantes, mostrar señales no neutras
+        if (concerning.length === 0) {
+          concerning = matchingRecommendations.filter(rec => Number(rec.option_score || 0) > 0);
+        }
+
+        // Ordenar por severidad y limitar a 5
+        concerning.sort((a, b) => {
+          const riskDiff = Number(b.risk_score || 0) - Number(a.risk_score || 0);
+          if (riskDiff !== 0) return riskDiff;
+          const scoreDiff = Number(b.option_score || 0) - Number(a.option_score || 0);
+          if (scoreDiff !== 0) return scoreDiff;
+          return (b.priority || 0) - (a.priority || 0);
+        });
+        matchingRecommendations = concerning.slice(0, 5);
+      } else {
+        // Modo: recomendaciones por score_range - mostrar 2-4
+        matchingRecommendations = recommendationTemplates.filter(template => {
+          return evaluateConditions(template.trigger_conditions || [], score, respuestas);
+        });
+        matchingRecommendations.sort((a, b) => (b.priority || 0) - (a.priority || 0));
+        matchingRecommendations = matchingRecommendations.slice(0, Math.min(4, matchingRecommendations.length));
+        
+        // Si no hay coincidencias, mostrar al menos una basada en el score
+        if (matchingRecommendations.length === 0) {
+          const defaultRec = recommendationTemplates.find(t => 
+            t.trigger_conditions && 
+            t.trigger_conditions.some(c => c.score_range && score >= c.score_range[0] && score <= c.score_range[1])
+          );
+          if (defaultRec) {
+            matchingRecommendations.push(defaultRec);
+          }
+        }
+      }
+      
+      // Renderizar recomendaciones
+      if (matchingRecommendations.length > 0) {
+        recommendationsList.innerHTML = matchingRecommendations.map(rec => `
+          <div class="recommendation-item">
+            <h3>${rec.title}</h3>
+            <p>${rec.description}</p>
+          </div>
+        `).join('');
+      } else {
+        recommendationsList.innerHTML = '<p style="text-align: center; color: var(--form-text-secondary);">No hay recomendaciones disponibles en este momento.</p>';
+      }
+    }
+    
+    // Función para renderizar CTAs
+    function renderCTAs(score, respuestas) {
+      const ctaList = document.getElementById('ctaList');
+      if (!ctaList) return;
+      
+      // Obtener plantillas del config
+      const ctaTemplates = [{"trigger_conditions": [{"score_range": [0, 30]}], "text": "Agendar valoración preventiva", "url": "/agenda/valoracion-preventiva", "style": "primary", "priority": 1, "style_obj": {"variant": "primary", "background_color": "#0F766E", "text_color": "#FFFFFF", "border_radius": "14px"}}, {"trigger_conditions": [{"score_range": [31, 60]}], "text": "Solicitar valoración especializada", "url": "https://wa.me/573103314120", "style": "primary", "priority": 1, "style_obj": {"variant": "primary", "background_color": "#1D4ED8", "text_color": "#FFFFFF", "border_radius": "14px"}}, {"trigger_conditions": [{"score_range": [61, 100]}], "text": "Agendar evaluación prioritaria", "url": "/agenda/prioritaria", "style": "accent", "priority": 1, "style_obj": {"variant": "accent", "background_color": "#F97316", "text_color": "#0F172A", "border_radius": "14px"}}];
+      
+      // Normalizar trigger_conditions: puede ser objeto o array
+      const normalizedCTAs = ctaTemplates.map(cta => {
+        const normalized = {...cta};
+        if (normalized.trigger_conditions && !Array.isArray(normalized.trigger_conditions)) {
+          // Es un objeto, convertir a array
+          if (normalized.trigger_conditions.score_range) {
+            normalized.trigger_conditions = [{score_range: normalized.trigger_conditions.score_range}];
+          } else {
+            normalized.trigger_conditions = [];
+          }
+        }
+        return normalized;
+      });
+      
+      // Filtrar CTAs que coinciden
+      const matchingCTAs = normalizedCTAs.filter(template => {
+        return evaluateConditions(template.trigger_conditions || [], score, respuestas);
+      });
+      
+      // Ordenar por prioridad y tomar el más relevante (o los primeros 2)
+      matchingCTAs.sort((a, b) => (b.priority || 0) - (a.priority || 0));
+      const toShow = matchingCTAs.slice(0, Math.min(2, matchingCTAs.length));
+      
+      // Si no hay coincidencias, mostrar uno basado en el score
+      if (toShow.length === 0) {
+        const defaultCTA = normalizedCTAs.find(t => {
+          if (!t.trigger_conditions || !Array.isArray(t.trigger_conditions)) return false;
+          return t.trigger_conditions.some(c => 
+            c.score_range && Array.isArray(c.score_range) && 
+            score >= c.score_range[0] && score <= c.score_range[1]
+          );
+        });
+        if (defaultCTA) {
+          toShow.push(defaultCTA);
+        }
+      }
+      
+      // Renderizar CTAs
+      if (toShow.length > 0) {
+        ctaList.innerHTML = toShow.map(cta => {
+          // Manejar style como objeto o string
+          let styleClass = '';
+          let inlineStyle = '';
+          
+          if (cta.style_obj && typeof cta.style_obj === 'object') {
+            // Forzar estilo unificado del CTA para mayor contraste en mobile ads
+            inlineStyle = 'style="background-color: #ffffff; color: #111111; border-color: #ffffff;"';
+            styleClass = '';
+          } else {
+            // Estructura simple: usar clases CSS
+            const styleStr = cta.style || 'primary';
+            styleClass = styleStr === 'secondary' ? 'secondary' : (styleStr === 'accent' ? 'accent' : '');
+          }
+          
+          return `<a href="${cta.url || '#'}" class="cta-button ${styleClass}" ${inlineStyle}>${cta.text}</a>`;
+        }).join('');
+      } else {
+        ctaList.innerHTML = '<p style="text-align: center; color: var(--form-text-secondary);">No hay acciones recomendadas en este momento.</p>';
+      }
+
+      // CTA final: reutilizar enlace de WhatsApp si existe
+      const finalContactButton = document.getElementById('finalContactButton');
+      if (finalContactButton) {
+        const whatsappCTA = normalizedCTAs.find(t =>
+          typeof t.url === 'string' &&
+          (t.url.includes('wa.me/') || t.url.includes('api.whatsapp.com'))
+        );
+        const fallbackCTA = toShow[0] || normalizedCTAs[0];
+        finalContactButton.href = (whatsappCTA && whatsappCTA.url) || (fallbackCTA && fallbackCTA.url) || '#';
+      }
+    }
+
+  </script>
+</body>
+</html>

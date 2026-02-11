@@ -1,0 +1,903 @@
+{
+  "timestamp": "2026-02-11T15:12:24.064608",
+  "website_url": "",
+  "product_info": {},
+  "design_analysis": {
+    "colores": {
+      "primario": "#252525",
+      "secundario": "#1A1A1A",
+      "acento": "#5A5A5A",
+      "fondo": "#0B0B0B",
+      "texto_principal": "#FFFFFF",
+      "texto_secundario": "#C8C8C8"
+    },
+    "tipografia": {
+      "fuente_principal": "Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif",
+      "fuente_secundaria": "Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif",
+      "tamaño_base": "16px",
+      "estilo": "sans-serif"
+    },
+    "estilo": {
+      "tipo": "moderno",
+      "radio_borde": "12px",
+      "sombras": "sí, suaves",
+      "espaciado": "24px"
+    }
+  },
+  "questions": [
+    {
+      "pregunta": "¿Tiene claro que le aplicaron una sustancia extraña o desconocida en su cuerpo?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Aún no es claro",
+            "description": "Si no estás seguro/a de qué te aplicaron, es útil reunir información básica: lugar, fecha aproximada, y cualquier documento o mensaje. Esto ayuda a orientar la valoración médica y a decidir qué estudios podrían ser necesarios."
+          }
+        },
+        {
+          "texto": "No estoy muy seguro/a",
+          "valor_score": 0.6,
+          "recomendacion": {
+            "title": "Sospecha parcial",
+            "description": "Muchas personas no reciben información completa sobre el material aplicado. Si hay síntomas locales o generales, una consulta especializada puede aclarar la situación con examen físico y, si corresponde, imágenes o pruebas complementarias."
+          }
+        },
+        {
+          "texto": "Sí",
+          "valor_score": 1,
+          "recomendacion": {
+            "title": "Exposición probable",
+            "description": "Tener claridad sobre una sustancia desconocida permite evaluar riesgos de manera más directa. Si presentas síntomas, una valoración médica puede ayudar a identificar complicaciones locales y signos de inflamación sistémica."
+          }
+        }
+      ],
+      "type": "yes_no_maybe",
+      "weight": 5,
+      "index": 1
+    },
+    {
+      "pregunta": "¿Hace cuánto tiempo le aplicaron la sustancia?",
+      "opciones": [
+        {
+          "texto": "Menos de 6 meses",
+          "valor_score": 0.2,
+          "recomendacion": {
+            "title": "Periodo reciente",
+            "description": "En los primeros meses pueden aparecer inflamación, dolor y cambios de la piel. Si los síntomas son persistentes o progresivos, conviene una valoración para descartar infección, reacción inflamatoria u otras complicaciones."
+          }
+        },
+        {
+          "texto": "Entre 6 meses y 2 años",
+          "valor_score": 0.5,
+          "recomendacion": {
+            "title": "Riesgo de evolución",
+            "description": "En este rango pueden aparecer nódulos, endurecimiento o síntomas generales que antes no existían. Un control médico puede identificar signos tempranos de complicación y orientar el manejo."
+          }
+        },
+        {
+          "texto": "Entre 2 y 5 años",
+          "valor_score": 0.7,
+          "recomendacion": {
+            "title": "Posibles complicaciones tardías",
+            "description": "Algunas complicaciones se manifiestan años después, incluyendo síntomas locales persistentes y signos sistémicos. Si notas empeoramiento, es razonable priorizar una valoración especializada."
+          }
+        },
+        {
+          "texto": "Más de 5 años",
+          "valor_score": 1,
+          "recomendacion": {
+            "title": "Complicaciones de larga evolución",
+            "description": "Con el tiempo puede aumentar el riesgo de inflamación crónica, migración del material y síntomas sistémicos. Una evaluación completa puede ayudar a definir la severidad y las opciones de tratamiento."
+          }
+        },
+        {
+          "texto": "No lo recuerdo con exactitud",
+          "valor_score": 0.6,
+          "recomendacion": {
+            "title": "Fecha incierta",
+            "description": "No recordar la fecha es común. Aun así, los síntomas actuales son la prioridad: si hay dolor, secreción, fiebre o empeoramiento, es recomendable valoración médica para determinar el siguiente paso."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 10,
+      "index": 2
+    },
+    {
+      "pregunta": "¿Presenta dolor en la zona donde fue aplicada la sustancia?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Sin dolor local",
+            "description": "La ausencia de dolor es una señal favorable, pero no descarta otras complicaciones. Si hay cambios visibles o síntomas generales, conviene mantener seguimiento."
+          }
+        },
+        {
+          "texto": "Ocasional",
+          "valor_score": 3,
+          "recomendacion": {
+            "title": "Dolor intermitente",
+            "description": "El dolor ocasional puede relacionarse con inflamación leve o sensibilidad local. Si aumenta en frecuencia o intensidad, se recomienda evaluación para identificar su causa."
+          }
+        },
+        {
+          "texto": "Frecuente",
+          "valor_score": 6,
+          "recomendacion": {
+            "title": "Dolor persistente",
+            "description": "El dolor frecuente sugiere inflamación sostenida o reacción local. Una valoración puede ayudar a determinar si hay nódulos, migración u otras complicaciones asociadas."
+          }
+        },
+        {
+          "texto": "Constante",
+          "valor_score": 8,
+          "recomendacion": {
+            "title": "Dolor constante",
+            "description": "El dolor constante es una señal de alerta clínica que amerita evaluación prioritaria. Puede asociarse a inflamación importante, compromiso tisular o complicaciones que requieren manejo médico."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 8,
+      "index": 3
+    },
+    {
+      "pregunta": "¿Ha notado inflamación persistente en la zona?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Sin inflamación evidente",
+            "description": "No observar inflamación es positivo. Aun así, si existen otros síntomas locales o generales, una revisión médica puede orientar el riesgo real."
+          }
+        },
+        {
+          "texto": "Leve",
+          "valor_score": 3,
+          "recomendacion": {
+            "title": "Inflamación leve",
+            "description": "La inflamación leve puede ser intermitente y asociarse a irritación local. Si persiste o progresa, conviene una evaluación para descartar complicaciones."
+          }
+        },
+        {
+          "texto": "Moderada",
+          "valor_score": 6,
+          "recomendacion": {
+            "title": "Inflamación moderada",
+            "description": "La inflamación moderada sostenida puede indicar reacción inflamatoria crónica. Una valoración clínica puede ayudar a decidir si se requieren estudios por imágenes."
+          }
+        },
+        {
+          "texto": "Severa",
+          "valor_score": 8,
+          "recomendacion": {
+            "title": "Inflamación severa",
+            "description": "Inflamación severa es una señal de alarma, especialmente si hay dolor, calor local o cambios en la piel. Recomendable atención médica prioritaria."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 8,
+      "index": 4
+    },
+    {
+      "pregunta": "¿Ha sentido endurecimiento o formación de masas/nódulos en la zona?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Sin nódulos aparentes",
+            "description": "No detectar nódulos reduce la probabilidad de reacción local marcada. Aun así, cambios sutiles pueden requerir exploración clínica si hay síntomas."
+          }
+        },
+        {
+          "texto": "Pequeños",
+          "valor_score": 4,
+          "recomendacion": {
+            "title": "Nódulos pequeños",
+            "description": "Los nódulos pequeños pueden corresponder a inflamación localizada. Una valoración médica puede determinar su naturaleza y si hay signos de progresión."
+          }
+        },
+        {
+          "texto": "Múltiples/grandes",
+          "valor_score": 8,
+          "recomendacion": {
+            "title": "Nódulos múltiples/grandes",
+            "description": "La presencia de múltiples nódulos o masas grandes sugiere compromiso local significativo. Es recomendable evaluación especializada para estimar extensión y opciones de manejo."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 8,
+      "index": 5
+    },
+    {
+      "pregunta": "¿Ha tenido cambios de coloración en la piel (rojiza, violácea, oscura) en esa zona?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Sin cambios visibles",
+            "description": "No hay señales cutáneas evidentes. Mantén vigilancia si aparece dolor, inflamación o sensibilidad, ya que los cambios pueden ser progresivos."
+          }
+        },
+        {
+          "texto": "Leves",
+          "valor_score": 3,
+          "recomendacion": {
+            "title": "Cambios leves",
+            "description": "Los cambios leves pueden relacionarse con irritación o inflamación superficial. Si aumentan o se acompañan de dolor, conviene valoración médica."
+          }
+        },
+        {
+          "texto": "Notorios",
+          "valor_score": 6,
+          "recomendacion": {
+            "title": "Cambios notorios",
+            "description": "Cambios notorios en la piel pueden indicar inflamación importante o compromiso de tejidos. Se recomienda evaluación prioritaria, especialmente si hay calor local o dolor constante."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 6,
+      "index": 6
+    },
+    {
+      "pregunta": "¿Ha presentado salida de líquido, secreción o ulceraciones en la zona?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Sin secreción",
+            "description": "La ausencia de secreción es un buen signo. Si hay dolor o inflamación, aún puede existir reacción local; por eso se recomienda seguimiento si los síntomas persisten."
+          }
+        },
+        {
+          "texto": "Una vez",
+          "valor_score": 6,
+          "recomendacion": {
+            "title": "Episodio aislado",
+            "description": "Un episodio de secreción o ulceración puede asociarse a inflamación o infección. Es recomendable evaluación médica para descartar complicaciones que requieran tratamiento."
+          }
+        },
+        {
+          "texto": "Varias veces",
+          "valor_score": 10,
+          "recomendacion": {
+            "title": "Alerta clínica",
+            "description": "Secreción o ulceración recurrente es una señal de alarma que amerita valoración prioritaria. Puede indicar infección, reacción inflamatoria severa o compromiso tisular que requiere manejo especializado."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 10,
+      "index": 7
+    },
+    {
+      "pregunta": "¿Ha presentado fatiga intensa que no mejora con el descanso?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Energía conservada",
+            "description": "No reportar fatiga intensa es positivo. Si aparecen otros síntomas sistémicos, conviene valorarlos en conjunto para orientar el riesgo."
+          }
+        },
+        {
+          "texto": "A veces",
+          "valor_score": 3,
+          "recomendacion": {
+            "title": "Fatiga ocasional",
+            "description": "La fatiga ocasional puede tener múltiples causas. Si se acompaña de dolor muscular, articular o trastornos del sueño, puede ser útil una valoración médica integral."
+          }
+        },
+        {
+          "texto": "Frecuente",
+          "valor_score": 6,
+          "recomendacion": {
+            "title": "Fatiga frecuente",
+            "description": "La fatiga frecuente puede ser compatible con inflamación sistémica o trastornos asociados. Una evaluación puede orientar estudios y descartar otras causas."
+          }
+        },
+        {
+          "texto": "Siempre",
+          "valor_score": 8,
+          "recomendacion": {
+            "title": "Fatiga marcada",
+            "description": "Fatiga constante que no mejora con descanso es una señal importante. Se recomienda valoración médica para identificar causas inflamatorias, autoinmunes u otras condiciones tratables."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 8,
+      "index": 8
+    },
+    {
+      "pregunta": "¿Siente dolor muscular generalizado?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Sin mialgias",
+            "description": "No presentar dolor muscular generalizado reduce el componente sistémico. Mantén vigilancia si aparecen otros síntomas como fatiga, fiebre o dolor articular."
+          }
+        },
+        {
+          "texto": "Leve",
+          "valor_score": 3,
+          "recomendacion": {
+            "title": "Mialgias leves",
+            "description": "Dolores musculares leves pueden ser inespecíficos. Si son persistentes y se acompañan de fatiga o dolor articular, conviene valoración médica."
+          }
+        },
+        {
+          "texto": "Moderado",
+          "valor_score": 5,
+          "recomendacion": {
+            "title": "Mialgias moderadas",
+            "description": "Dolor muscular moderado y sostenido puede ser compatible con un proceso inflamatorio. Un enfoque clínico integral ayuda a orientar el diagnóstico diferencial."
+          }
+        },
+        {
+          "texto": "Severo",
+          "valor_score": 7,
+          "recomendacion": {
+            "title": "Mialgias severas",
+            "description": "Dolor muscular severo limita la funcionalidad y amerita evaluación. Es importante descartar causas inflamatorias y autoinmunes, especialmente si hay otros síntomas sistémicos."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 7,
+      "index": 9
+    },
+    {
+      "pregunta": "¿Tiene dolor articular frecuente?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Sin artralgias",
+            "description": "La ausencia de dolor articular es favorable. Si aparece rigidez matutina, hinchazón o dolor persistente, conviene valorarlo a tiempo."
+          }
+        },
+        {
+          "texto": "Ocasional",
+          "valor_score": 3,
+          "recomendacion": {
+            "title": "Artralgias ocasionales",
+            "description": "El dolor articular ocasional puede tener múltiples causas. Si aumenta o se hace recurrente junto a fatiga, conviene evaluación clínica."
+          }
+        },
+        {
+          "texto": "Frecuente",
+          "valor_score": 6,
+          "recomendacion": {
+            "title": "Artralgias frecuentes",
+            "description": "Dolor articular frecuente puede sugerir inflamación sistémica. Un especialista puede orientar estudios y evaluar signos de enfermedad inflamatoria."
+          }
+        },
+        {
+          "texto": "Diario",
+          "valor_score": 8,
+          "recomendacion": {
+            "title": "Artralgias diarias",
+            "description": "Dolor articular diario afecta calidad de vida y requiere valoración médica. Es importante descartar procesos autoinmunes o inflamatorios y plantear manejo oportuno."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 8,
+      "index": 10
+    },
+    {
+      "pregunta": "¿Ha experimentado caída de cabello inusual desde la aplicación?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Sin caída notable",
+            "description": "No reportar caída de cabello reduce un signo sistémico frecuente. Si aparecen otros síntomas generales, conviene valorarlos en conjunto."
+          }
+        },
+        {
+          "texto": "Leve",
+          "valor_score": 2,
+          "recomendacion": {
+            "title": "Caída leve",
+            "description": "La caída leve puede asociarse a estrés, cambios hormonales u otras causas. Si se acompaña de fatiga, dolor articular o problemas de piel, conviene evaluación."
+          }
+        },
+        {
+          "texto": "Moderada",
+          "valor_score": 4,
+          "recomendacion": {
+            "title": "Caída moderada",
+            "description": "Caída moderada y persistente puede ser un signo sistémico. Es recomendable valoración para descartar deficiencias y procesos inflamatorios."
+          }
+        },
+        {
+          "texto": "Abundante",
+          "valor_score": 6,
+          "recomendacion": {
+            "title": "Caída abundante",
+            "description": "Caída abundante es una señal importante, especialmente si coincide con fatiga y dolores. Se recomienda evaluación médica integral para orientar causas tratables."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 6,
+      "index": 11
+    },
+    {
+      "pregunta": "¿Ha notado problemas de memoria o concentración desde la aplicación?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Cognición preservada",
+            "description": "No reportar alteraciones cognitivas es favorable. Si aparecen fatiga intensa, dolor o trastornos del sueño, pueden influir en la concentración; conviene valorarlos."
+          }
+        },
+        {
+          "texto": "Leve",
+          "valor_score": 2,
+          "recomendacion": {
+            "title": "Dificultades leves",
+            "description": "Problemas leves de memoria o concentración pueden asociarse a fatiga, estrés o sueño. Si persisten o empeoran, conviene evaluación para descartar causas tratables."
+          }
+        },
+        {
+          "texto": "Moderado",
+          "valor_score": 4,
+          "recomendacion": {
+            "title": "Dificultades moderadas",
+            "description": "Alteraciones moderadas de memoria o concentración pueden ser parte de un cuadro sistémico. Una valoración médica ayuda a orientar estudios y manejo."
+          }
+        },
+        {
+          "texto": "Severo",
+          "valor_score": 6,
+          "recomendacion": {
+            "title": "Dificultades severas",
+            "description": "Problemas severos de memoria o concentración afectan la vida diaria y requieren evaluación. Es importante descartar causas inflamatorias, metabólicas o neurológicas."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 6,
+      "index": 12
+    },
+    {
+      "pregunta": "¿Tiene trastornos del sueño desde la aplicación?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Sueño adecuado",
+            "description": "Dormir bien favorece la recuperación y reduce el impacto del estrés. Si aparecen otros síntomas sistémicos, mantén hábitos de sueño saludables."
+          }
+        },
+        {
+          "texto": "Ocasionales",
+          "valor_score": 2,
+          "recomendacion": {
+            "title": "Trastornos ocasionales",
+            "description": "Alteraciones ocasionales del sueño pueden deberse a dolor, ansiedad o estrés. Si se hacen frecuentes o se acompañan de fatiga marcada, conviene valoración."
+          }
+        },
+        {
+          "texto": "Frecuentes",
+          "valor_score": 4,
+          "recomendacion": {
+            "title": "Trastornos frecuentes",
+            "description": "Problemas frecuentes de sueño pueden agravar fatiga y dolor. Una evaluación integral puede orientar medidas de higiene del sueño y descartar causas médicas."
+          }
+        },
+        {
+          "texto": "Severos",
+          "valor_score": 6,
+          "recomendacion": {
+            "title": "Trastornos severos",
+            "description": "Trastornos severos del sueño afectan la calidad de vida y la recuperación. Se recomienda valoración médica para identificar causas y plantear tratamiento."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 5,
+      "index": 13
+    },
+    {
+      "pregunta": "¿Ha tenido fiebre recurrente sin causa aparente desde la aplicación?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Sin fiebre recurrente",
+            "description": "No presentar fiebre recurrente es favorable. Si en el futuro aparece fiebre sin causa clara, conviene consultar para descartar infección o reacción inflamatoria."
+          }
+        },
+        {
+          "texto": "Una vez",
+          "valor_score": 4,
+          "recomendacion": {
+            "title": "Un episodio de fiebre",
+            "description": "Un episodio aislado de fiebre puede tener múltiples causas. Si se repite o se acompaña de otros síntomas sistémicos, es importante valoración médica."
+          }
+        },
+        {
+          "texto": "Varias veces",
+          "valor_score": 8,
+          "recomendacion": {
+            "title": "Fiebre recurrente",
+            "description": "Fiebre recurrente sin causa aparente es una señal de alarma. Se recomienda valoración médica urgente para descartar infección, reacción al material o proceso inflamatorio sistémico."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 10,
+      "index": 14
+    },
+    {
+      "pregunta": "¿Le han diagnosticado alguna enfermedad autoinmune después de la aplicación?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Sin diagnóstico autoinmune",
+            "description": "No tener diagnóstico autoinmune posterior es favorable. Si hay síntomas sugestivos (fatiga, dolor articular, alteraciones cutáneas), conviene valoración para descartar o confirmar."
+          }
+        },
+        {
+          "texto": "En estudio",
+          "valor_score": 6,
+          "recomendacion": {
+            "title": "Estudio en curso",
+            "description": "Si hay sospecha de enfermedad autoinmune en estudio, es importante completar la evaluación y seguir las indicaciones del especialista. La asociación con biopolímeros debe ser valorada por el médico."
+          }
+        },
+        {
+          "texto": "Sí",
+          "valor_score": 10,
+          "recomendacion": {
+            "title": "Diagnóstico autoinmune",
+            "description": "Un diagnóstico autoinmune posterior a la aplicación requiere manejo especializado. Se recomienda seguimiento con reumatología o el especialista indicado y valorar con el médico la relación con el material aplicado."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 10,
+      "index": 15
+    },
+    {
+      "pregunta": "¿Los síntomas han empeorado con el tiempo?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Sin progresión",
+            "description": "La ausencia de empeoramiento es un signo favorable. Aun así, es útil mantener seguimiento si hubo aplicación de sustancia desconocida."
+          }
+        },
+        {
+          "texto": "Leve",
+          "valor_score": 4,
+          "recomendacion": {
+            "title": "Progresión leve",
+            "description": "Un empeoramiento leve sugiere evolución del proceso local o sistémico. Una valoración puede ayudar a detener la progresión y aliviar síntomas."
+          }
+        },
+        {
+          "texto": "Claro empeoramiento",
+          "valor_score": 8,
+          "recomendacion": {
+            "title": "Progresión evidente",
+            "description": "Empeoramiento claro es una señal importante que amerita evaluación prioritaria. Identificar la causa y la extensión ayuda a definir manejo y reducir complicaciones."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 8,
+      "index": 16
+    },
+    {
+      "pregunta": "¿Ha necesitado hospitalización por complicaciones relacionadas con esta situación?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Sin hospitalizaciones",
+            "description": "No haber requerido hospitalización es favorable. Sin embargo, si existen señales de alarma, una valoración especializada sigue siendo recomendable."
+          }
+        },
+        {
+          "texto": "Una vez",
+          "valor_score": 6,
+          "recomendacion": {
+            "title": "Complicación significativa",
+            "description": "Una hospitalización sugiere un evento clínico relevante. Es importante revisar causas, tratamientos previos y evolución para decidir el siguiente paso."
+          }
+        },
+        {
+          "texto": "Más de una vez",
+          "valor_score": 10,
+          "recomendacion": {
+            "title": "Alta prioridad",
+            "description": "Hospitalizaciones repetidas indican alta complejidad clínica. Se recomienda evaluación prioritaria con equipo especializado para plan diagnóstico y terapéutico integral."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 10,
+      "index": 17
+    },
+    {
+      "pregunta": "¿Le han recomendado cirugía o extracción del material?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Sin recomendación quirúrgica",
+            "description": "No tener recomendación quirúrgica puede indicar un cuadro menos evidente o no valorado aún. Si hay síntomas persistentes, conviene una evaluación específica."
+          }
+        },
+        {
+          "texto": "Recomendada pero no realizada",
+          "valor_score": 6,
+          "recomendacion": {
+            "title": "Valoración quirúrgica pendiente",
+            "description": "Si ya se recomendó cirugía, es importante entender el motivo y el plan. Una segunda opinión especializada puede aclarar riesgos, beneficios y expectativas realistas."
+          }
+        },
+        {
+          "texto": "Ya realizada",
+          "valor_score": 4,
+          "recomendacion": {
+            "title": "Seguimiento post-tratamiento",
+            "description": "Tras una intervención, es clave el seguimiento clínico para evaluar mejoría y detectar síntomas persistentes. Si continúas con molestias, conviene reevaluación integral."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 6,
+      "index": 18
+    },
+    {
+      "pregunta": "¿Ha presentado migración del material a otras zonas del cuerpo?",
+      "opciones": [
+        {
+          "texto": "No",
+          "valor_score": 0,
+          "recomendacion": {
+            "title": "Sin migración aparente",
+            "description": "No notar migración es positivo. Si hay nódulos, dolor o cambios en otras zonas, conviene valoración para descartar migración no evidente."
+          }
+        },
+        {
+          "texto": "Sospecha",
+          "valor_score": 5,
+          "recomendacion": {
+            "title": "Posible migración",
+            "description": "La migración puede manifestarse con bultos, dolor o cambios de forma en zonas cercanas o distantes. Una valoración clínica e imágenes pueden confirmar o descartar."
+          }
+        },
+        {
+          "texto": "Confirmado por médico",
+          "valor_score": 10,
+          "recomendacion": {
+            "title": "Señal de alta complejidad",
+            "description": "La migración confirmada sugiere compromiso extendido. Se recomienda evaluación especializada para definir severidad, riesgos y opciones de manejo."
+          }
+        }
+      ],
+      "type": "multiple_choice",
+      "weight": 10,
+      "index": 19
+    },
+    {
+      "pregunta": "En una escala del 1 al 10, ¿qué tanto ha afectado esto tu calidad de vida? (1 = mínimo, 10 = severo)",
+      "opciones": [
+        {
+          "texto": "1",
+          "valor_score": 0.1,
+          "recomendacion": {
+            "title": "Impacto mínimo",
+            "description": "Si el impacto es mínimo, puede ser buen momento para una valoración preventiva y educación sobre señales de alarma. Así se detectan cambios a tiempo y se planifica seguimiento."
+          }
+        },
+        {
+          "texto": "2",
+          "valor_score": 0.2,
+          "recomendacion": {
+            "title": "Impacto bajo",
+            "description": "Un impacto bajo sugiere síntomas controlables, pero conviene vigilar evolución. Considera una consulta si aparecen nuevos síntomas o si los actuales aumentan."
+          }
+        },
+        {
+          "texto": "3",
+          "valor_score": 0.3,
+          "recomendacion": {
+            "title": "Impacto leve",
+            "description": "Un impacto leve puede relacionarse con molestias intermitentes. Un plan de evaluación puede ayudarte a entender causas y prevenir progresión."
+          }
+        },
+        {
+          "texto": "4",
+          "valor_score": 0.4,
+          "recomendacion": {
+            "title": "Impacto leve-moderado",
+            "description": "Cuando el impacto comienza a sentirse en actividades diarias, vale la pena una valoración más completa. El objetivo es identificar factores tratables y mejorar bienestar."
+          }
+        },
+        {
+          "texto": "5",
+          "valor_score": 0.5,
+          "recomendacion": {
+            "title": "Impacto moderado",
+            "description": "Impacto moderado sugiere necesidad de un plan de manejo. Una consulta especializada puede orientar estudios, opciones terapéuticas y seguimiento adecuado."
+          }
+        },
+        {
+          "texto": "6",
+          "valor_score": 0.6,
+          "recomendacion": {
+            "title": "Impacto moderado-alto",
+            "description": "Si el impacto es moderado-alto, suele existir una carga física o emocional significativa. Es recomendable valoración para definir prioridades de atención y tratamiento."
+          }
+        },
+        {
+          "texto": "7",
+          "valor_score": 0.7,
+          "recomendacion": {
+            "title": "Impacto alto",
+            "description": "Un impacto alto indica afectación clara de la vida diaria. Una evaluación integral puede ayudar a identificar complicaciones y construir un plan de manejo realista."
+          }
+        },
+        {
+          "texto": "8",
+          "valor_score": 0.8,
+          "recomendacion": {
+            "title": "Impacto muy alto",
+            "description": "Impacto muy alto sugiere necesidad de atención prioritaria. Es importante valorar tanto síntomas locales como sistémicos para tomar decisiones informadas."
+          }
+        },
+        {
+          "texto": "9",
+          "valor_score": 0.9,
+          "recomendacion": {
+            "title": "Impacto severo",
+            "description": "Impacto severo suele acompañarse de síntomas persistentes y limitantes. Se recomienda evaluación prioritaria con especialistas para definir el abordaje más seguro."
+          }
+        },
+        {
+          "texto": "10",
+          "valor_score": 1,
+          "recomendacion": {
+            "title": "Impacto crítico",
+            "description": "Si el impacto es crítico, es importante buscar valoración médica prioritaria. Un equipo especializado puede orientar el diagnóstico, aliviar síntomas y reducir riesgos de complicaciones."
+          }
+        }
+      ],
+      "type": "scale_1_10",
+      "weight": 10,
+      "index": 20
+    }
+  ],
+  "form_config": {
+    "result_page_url": "results/index.html",
+    "num_questions": 20,
+    "required_fields": [
+      "nombre",
+      "correo"
+    ]
+  },
+  "cta_templates": [
+    {
+      "trigger_conditions": [
+        {
+          "score_range": [
+            0,
+            30
+          ]
+        }
+      ],
+      "text": "Agendar valoración preventiva",
+      "url": "/agenda/valoracion-preventiva",
+      "style": "primary",
+      "priority": 1,
+      "style_obj": {
+        "variant": "primary",
+        "background_color": "#0F766E",
+        "text_color": "#FFFFFF",
+        "border_radius": "14px"
+      }
+    },
+    {
+      "trigger_conditions": [
+        {
+          "score_range": [
+            31,
+            60
+          ]
+        }
+      ],
+      "text": "Solicitar valoración especializada",
+      "url": "https://wa.me/573103314120",
+      "style": "primary",
+      "priority": 1,
+      "style_obj": {
+        "variant": "primary",
+        "background_color": "#1D4ED8",
+        "text_color": "#FFFFFF",
+        "border_radius": "14px"
+      }
+    },
+    {
+      "trigger_conditions": [
+        {
+          "score_range": [
+            61,
+            100
+          ]
+        }
+      ],
+      "text": "Agendar evaluación prioritaria",
+      "url": "/agenda/prioritaria",
+      "style": "accent",
+      "priority": 1,
+      "style_obj": {
+        "variant": "accent",
+        "background_color": "#F97316",
+        "text_color": "#0F172A",
+        "border_radius": "14px"
+      }
+    }
+  ],
+  "mobile_ad_mode": true,
+  "red_alert_triggers": [
+    {
+      "question_index": 7,
+      "answer": "Varias veces",
+      "label": "Secreción recurrente o ulceración"
+    },
+    {
+      "question_index": 14,
+      "answer": "Varias veces",
+      "label": "Fiebre repetida sin causa"
+    },
+    {
+      "question_index": 15,
+      "answer": "Sí",
+      "label": "Diagnóstico autoinmune confirmado"
+    },
+    {
+      "question_index": 19,
+      "answer": "Confirmado por médico",
+      "label": "Migración confirmada"
+    },
+    {
+      "question_index": 17,
+      "answer": "Más de una vez",
+      "label": "Hospitalizaciones repetidas"
+    }
+  ]
+}

@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Formulario de Evaluación</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Colores primarios */
+      --form-primary: #252525;
+      --form-primary-foreground: #FFFFFF;
+
+      /* Colores secundarios */
+      --form-secondary: #1A1A1A;
+      --form-secondary-foreground: #FFFFFF;
+
+      /* Colores de fondo */
+      --form-background: #0B0B0B;
+      --form-foreground: #FFFFFF;
+      --form-card: #0B0B0B;
+      --form-card-foreground: #FFFFFF;
+
+      /* Bordes y inputs (contraste según tema claro/oscuro) */
+      --form-border: #5A5A5A;
+      --form-input: #5A5A5A;
+      --form-input-bg: #ffffff;
+      --form-input-foreground: #171717;
+      --form-ring: #252525;
+
+      /* Colores de texto */
+      --form-muted: #f4f4f5;
+      --form-muted-foreground: #C8C8C8;
+      --form-accent: #f4f4f5;
+      --form-accent-foreground: #FFFFFF;
+
+      /* Estados */
+      --form-destructive: #ef4444;
+      --form-destructive-foreground: #ffffff;
+
+      /* Sombras estilo shadcn (más sutiles) */
+      --form-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --form-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+      --form-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+      --form-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+      /* Tipografía */
+      --form-font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      --form-font-size-base: 16px;
+
+      /* Radio de bordes */
+      --form-radius: 12px;
+      --form-radius-button: 12px;
+
+      /* Espaciado */
+      --form-spacing-xs: 0.25rem;
+      --form-spacing-sm: 0.5rem;
+      --form-spacing-md: 0.75rem;
+      --form-spacing-lg: 1rem;
+      --form-spacing-xl: 1.5rem;
+      --form-spacing-2xl: 2rem;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      background-color: var(--form-card);
+    }
+
+    body {
+      font-family: var(--form-font-family);
+      font-size: var(--form-font-size-base);
+      color: var(--form-foreground);
+      background-color: var(--form-card);
+      line-height: 1.5;
+      padding: max(var(--form-spacing-xl), env(safe-area-inset-top)) var(--form-spacing-lg) calc(var(--form-spacing-xl) + env(safe-area-inset-bottom));
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body.ad-mode {
+      padding: 0;
+      background-color: var(--form-card);
+    }
+
+    .embeddable-form-container {
+      max-width: 640px;
+      margin: 0 auto;
+      background: var(--form-card);
+      border: 1px solid var(--form-border);
+      border-radius: var(--form-radius);
+      box-shadow: var(--form-shadow-lg);
+      overflow: hidden;
+    }
+
+    .embeddable-form-container.ad-mode {
+      max-width: 100%;
+      min-height: 100dvh;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .form-header-top {
+      background-color: var(--form-primary);
+      padding: var(--form-spacing-xl) var(--form-spacing-2xl);
+      margin: 0;
+      border-bottom: 1px solid var(--form-border);
+      text-align: center;
+    }
+
+    .form-header-top h1 {
+      color: var(--form-primary-foreground);
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      line-height: 1.2;
+    }
+
+    .form-content {
+      padding: var(--form-spacing-2xl);
+      background: var(--form-card);
+    }
+
+    body.step-bg-active .form-content {
+      position: relative;
+      padding: 0;
+      background-color: var(--form-card);
+      /* Imagen a pantalla completa como en la portada */
+      background-image: var(--active-step-bg-image);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100dvh;
+    }
+
+    body.step-bg-active .form-content::before {
+      display: none;
+      /* Desactivamos el efecto de blur lateral ya que usamos cover */
+    }
+
+    body.step-bg-active .form-content::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.20), rgba(0, 0, 0, 0.62));
+      z-index: 0;
+    }
+
+    body.step-bg-active .form-content>* {
+      position: relative;
+      z-index: 1;
+    }
+
+    .form-header {
+      margin-bottom: var(--form-spacing-xl);
+      text-align: center;
+    }
+
+    .form-header h2 {
+      color: var(--form-foreground);
+      font-size: 0.9375rem;
+      margin: 0;
+      font-weight: 500;
+      color: var(--form-muted-foreground);
+    }
+
+    .progress-text {
+      text-align: center;
+      color: var(--form-muted-foreground);
+      font-size: 0.8125rem;
+      margin-bottom: var(--form-spacing-md);
+      font-weight: 500;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 2px;
+      background-color: var(--form-muted);
+      border-radius: 1px;
+      margin-bottom: var(--form-spacing-xl);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--form-primary);
+      width: 0%;
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 1px;
+    }
+
+    .form-step {
+      display: none;
+      animation: fadeIn 0.3s ease-in;
+      visibility: hidden;
+    }
+
+    .form-step.active {
+      display: block;
+      visibility: visible;
+    }
+
+    .info-slide .info-slide-inner {
+      padding: var(--form-spacing-md) 0;
+    }
+
+    .info-slide-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--form-foreground);
+      margin-bottom: var(--form-spacing-lg);
+      line-height: 1.4;
+    }
+
+    .info-slide-note {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--form-muted-foreground);
+      margin: 0;
+      margin-bottom: 0.35rem;
+    }
+
+    .info-slide-note-divider {
+      width: 48px;
+      height: 2px;
+      background: var(--form-muted);
+      margin-bottom: var(--form-spacing-lg);
+    }
+
+    .form-step.active.info-slide-has-bg {
+      /* El fondo lo maneja .form-content cuando está activo (step-bg-active) */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--form-spacing-2xl) 0;
+      overflow: hidden;
+    }
+
+    .info-slide-has-bg .info-slide-inner {
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 0;
+      padding: clamp(var(--form-spacing-xl), 3vw, var(--form-spacing-2xl));
+      border-radius: var(--form-radius);
+      width: min(640px, 92%);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .info-slide-content {
+      font-size: 0.9375rem;
+      color: var(--form-muted-foreground);
+      line-height: 1.6;
+      margin-bottom: var(--form-spacing-xl);
+    }
+
+    .info-slide-content p {
+      margin-bottom: 0.75rem;
+    }
+
+    .info-slide-continuar {
+      margin-top: var(--form-spacing-md);
+    }
+
+    .cover-step.has-cover-bg {
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+
+    .cover-step.has-cover-bg .cover-inner {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      /* Coloca el botón en el tercio inferior (con aire al borde inferior) */
+      padding: 0 var(--form-spacing-xl) clamp(56px, 14vh, 180px);
+      text-align: center;
+    }
+
+    /* Si ya hay imagen de fondo, no reservamos espacio para placeholders */
+    .cover-step.has-cover-bg .cover-logo,
+    .cover-step.has-cover-bg .cover-image {
+      display: none;
+    }
+
+    .cover-step .cover-inner {
+      text-align: center;
+      padding: var(--form-spacing-2xl) 0;
+    }
+
+    .cover-step .cover-logo {
+      min-height: 80px;
+      margin-bottom: var(--form-spacing-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cover-step .cover-image {
+      min-height: 120px;
+      margin-bottom: var(--form-spacing-2xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cover-step .btn-cover-comenzar {
+      font-size: 1rem;
+      padding: var(--form-spacing-lg) var(--form-spacing-2xl);
+    }
+
+    .cover-step.has-cover-bg .btn-cover-comenzar {
+      font-size: 1.25rem;
+      line-height: 1.2;
+      padding: 18px 28px;
+      width: min(92%, 560px);
+      border-radius: 999px;
+      background: #ffffff !important;
+      color: #000000 !important;
+      border: 1px solid rgba(0, 0, 0, 0.12) !important;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.38);
+    }
+
+    .cover-step.has-cover-bg .btn-cover-comenzar:hover {
+      transform: translateY(-1px);
+    }
+
+    .cover-step.has-cover-bg .btn-cover-comenzar:active {
+      transform: translateY(0px);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-group {
+      margin-bottom: var(--form-spacing-xl);
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: var(--form-spacing-sm);
+      font-weight: 500;
+      font-size: 0.875rem;
+      color: var(--form-foreground);
+      line-height: 1.5;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="tel"] {
+      display: flex;
+      width: 100%;
+      height: 2.5rem;
+      padding: 0 var(--form-spacing-lg);
+      border: 1px solid var(--form-input);
+      border-radius: var(--form-radius);
+      font-size: 0.875rem;
+      font-family: var(--form-font-family);
+      background-color: var(--form-input-bg, var(--form-background));
+      color: var(--form-input-foreground, var(--form-foreground));
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .form-group input[type="text"]:focus,
+    .form-group input[type="email"]:focus,
+    .form-group input[type="tel"]:focus {
+      outline: none;
+      border-color: var(--form-ring);
+      box-shadow: 0 0 0 2px var(--form-ring);
+    }
+
+    .form-group input.error {
+      border-color: var(--form-destructive);
+    }
+
+    .form-group input.error:focus {
+      box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+    }
+
+    .form-textarea {
+      display: flex;
+      width: 100%;
+      min-height: 6rem;
+      padding: var(--form-spacing-lg);
+      border: 1px solid var(--form-input);
+      border-radius: var(--form-radius);
+      font-size: 0.875rem;
+      font-family: var(--form-font-family);
+      background-color: var(--form-background);
+      color: var(--form-foreground);
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--form-ring);
+      box-shadow: 0 0 0 2px var(--form-ring);
+    }
+
+    .form-textarea::placeholder {
+      color: var(--form-muted-foreground);
+    }
+
+    .form-textarea.error {
+      border-color: var(--form-destructive);
+    }
+
+    .form-textarea.error:focus {
+      box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+    }
+
+    .error-message {
+      color: var(--form-destructive);
+      font-size: 0.8125rem;
+      margin-top: var(--form-spacing-xs);
+      display: none;
+      font-weight: 500;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .question-title {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      margin-bottom: var(--form-spacing-xl);
+      color: var(--form-foreground);
+      line-height: 1.5;
+    }
+
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--form-spacing-sm);
+    }
+
+    .option-button {
+      display: flex;
+      align-items: center;
+      padding: var(--form-spacing-lg) var(--form-spacing-xl);
+      border: 1px solid var(--form-border);
+      border-radius: var(--form-radius-button);
+      background: var(--form-background);
+      color: var(--form-foreground);
+      font-size: 0.875rem;
+      font-family: var(--form-font-family);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      text-align: left;
+      width: 100%;
+      min-height: 48px;
+      touch-action: manipulation;
+    }
+
+    .option-button:hover {
+      background: var(--form-accent);
+      color: var(--form-accent-foreground);
+      border-color: var(--form-ring);
+    }
+
+    .option-button.selected {
+      background: var(--form-primary);
+      color: var(--form-primary-foreground);
+      border-color: var(--form-primary);
+      font-weight: 600;
+      box-shadow: var(--form-shadow-sm);
+    }
+
+    /* Checkbox Options for Multiple Choice - estilo shadcn */
+    .checkbox-option {
+      display: flex;
+      align-items: flex-start;
+      padding: var(--form-spacing-lg);
+      border: 1px solid var(--form-border);
+      border-radius: var(--form-radius);
+      background: var(--form-background);
+      cursor: pointer;
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      margin-bottom: var(--form-spacing-sm);
+      min-height: 48px;
+      touch-action: manipulation;
+    }
+
+    .checkbox-option:hover {
+      background: var(--form-accent);
+      border-color: var(--form-ring);
+    }
+
+    .checkbox-option input[type="checkbox"] {
+      margin-right: var(--form-spacing-md);
+      margin-top: 0.125rem;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: var(--form-primary);
+      border-radius: calc(var(--form-radius) / 2);
+    }
+
+    .checkbox-option input[type="checkbox"]:checked+.checkbox-label {
+      font-weight: 500;
+    }
+
+    .checkbox-option:has(input[type="checkbox"]:checked) {
+      border-color: var(--form-primary);
+      background: rgba(255, 235, 0, 0.08);
+    }
+
+    .checkbox-label {
+      flex: 1;
+      color: var(--form-foreground);
+      font-size: 0.875rem;
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
+    /* Slider Styles - estilo shadcn */
+    .slider-container {
+      margin: var(--form-spacing-xl) 0;
+    }
+
+    .slider-wrapper {
+      position: relative;
+      padding: var(--form-spacing-lg) 0 var(--form-spacing-2xl);
+    }
+
+    .slider-input {
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--form-muted);
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      transition: background 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .slider-input:hover {
+      background: var(--form-border);
+    }
+
+    .slider-input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--form-primary);
+      border: 2px solid var(--form-background);
+      cursor: pointer;
+      box-shadow: var(--form-shadow-md);
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .slider-input::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+      box-shadow: var(--form-shadow-lg);
+    }
+
+    .slider-input::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--form-primary);
+      border: 2px solid var(--form-background);
+      cursor: pointer;
+      box-shadow: var(--form-shadow-md);
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .slider-input::-moz-range-thumb:hover {
+      transform: scale(1.1);
+      box-shadow: var(--form-shadow-lg);
+    }
+
+    .slider-marks {
+      display: flex;
+      justify-content: space-between;
+      margin-top: var(--form-spacing-md);
+      padding: 0 var(--form-spacing-lg);
+    }
+
+    .slider-mark {
+      font-size: 0.8125rem;
+      color: var(--form-muted-foreground);
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .slider-mark.active {
+      color: var(--form-primary);
+      font-weight: 600;
+    }
+
+    .slider-labels {
+      margin-top: var(--form-spacing-lg);
+      min-height: 60px;
+    }
+
+    .slider-label {
+      font-size: 0.8125rem;
+      color: var(--form-foreground);
+      text-align: center;
+      padding: var(--form-spacing-sm);
+      background: var(--form-muted);
+      border-radius: var(--form-radius);
+      margin-top: var(--form-spacing-sm);
+    }
+
+    .slider-label.active {
+      background: var(--form-primary);
+      color: var(--form-primary-foreground);
+      font-weight: 500;
+    }
+
+    .slider-value-display {
+      text-align: center;
+      margin-top: var(--form-spacing-lg);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--form-foreground);
+      min-height: 2rem;
+    }
+
+    .slider-current-value {
+      display: inline-block;
+      padding: var(--form-spacing-sm) var(--form-spacing-lg);
+      background: var(--form-accent);
+      border-radius: var(--form-radius);
+      font-size: 0.875rem;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: var(--form-spacing-2xl);
+      gap: var(--form-spacing-md);
+      padding-top: var(--form-spacing-xl);
+      border-top: 1px solid var(--form-border);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 2.75rem;
+      padding: 0 var(--form-spacing-xl);
+      border: 1px solid transparent;
+      border-radius: var(--form-radius-button);
+      font-size: 0.875rem;
+      font-family: var(--form-font-family);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      min-width: 120px;
+      white-space: nowrap;
+      touch-action: manipulation;
+    }
+
+    .btn-primary {
+      background: var(--form-primary);
+      color: var(--form-primary-foreground);
+      border: 1px solid var(--form-primary);
+      box-shadow: var(--form-shadow-sm);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--form-primary);
+      opacity: 0.9;
+      box-shadow: var(--form-shadow);
+    }
+
+    .btn-primary:active:not(:disabled) {
+      opacity: 0.95;
+      box-shadow: var(--form-shadow-sm);
+    }
+
+    .btn-secondary {
+      background: var(--form-secondary);
+      color: var(--form-secondary-foreground);
+      border: 1px solid var(--form-border);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--form-accent);
+      color: var(--form-accent-foreground);
+      border-color: var(--form-ring);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: max(0.4rem, env(safe-area-inset-top)) 0 calc(0.4rem + env(safe-area-inset-bottom));
+      }
+
+      .embeddable-form-container {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        box-shadow: none;
+        min-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+      }
+
+      .embeddable-form-container.ad-mode {
+        min-height: 100dvh;
+      }
+
+      .form-content {
+        padding: 1.25rem 1rem;
+      }
+
+      .form-header-top {
+        padding: 0.875rem 1rem;
+      }
+
+      .form-header-top h1 {
+        font-size: 1rem;
+        letter-spacing: 0.03em;
+      }
+
+      .progress-text {
+        font-size: 0.9rem;
+      }
+
+      .question-title {
+        font-size: 1.05rem;
+        line-height: 1.45;
+        margin-bottom: 1rem;
+      }
+
+      .checkbox-option {
+        padding: 0.9rem 0.85rem;
+        gap: 0.35rem;
+      }
+
+      .checkbox-option input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-top: 0.1rem;
+      }
+
+      .checkbox-label {
+        font-size: 0.95rem;
+        line-height: 1.45;
+      }
+
+      .form-group input[type="text"],
+      .form-group input[type="email"],
+      .form-group input[type="tel"],
+      .form-textarea {
+        font-size: 16px;
+        /* Evita zoom automático en iOS/WebView */
+      }
+
+      .button-container {
+        flex-direction: column-reverse;
+        margin-top: 1.5rem;
+        padding-top: 0.85rem;
+      }
+
+      .btn {
+        width: 100%;
+        min-width: auto;
+        min-height: 48px;
+        font-size: 0.95rem;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .form-header-top h1 {
+        font-size: 0.92rem;
+      }
+
+      .question-title {
+        font-size: 1rem;
+      }
+
+      .progress-text {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+
+<body class="ad-mode">
+  <div class="embeddable-form-container ad-mode">
+
+    <div class="form-content">
+      <div class="progress-text" id="progressText" style="display: none;"></div>
+      <div class="progress-bar-container" id="progressBarContainer" style="display: none;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <form id="evaluationForm">
+        <!-- Portada -->
+        <div class="form-step cover-step active has-cover-bg" id="step-0" data-step-type="cover"
+          style="background-image: url('PortadaScore.jpg');">
+          <div class="cover-inner">
+            <div class="cover-logo" id="coverLogo"><!-- Logo: reemplazar por <img> cuando se proporcione --></div>
+            <div class="cover-image" id="coverImage"><!-- Imagen: reemplazar por <img> cuando se proporcione --></div>
+            <button type="button" class="btn btn-primary btn-cover-comenzar">Comenzar Score de Progresión</button>
+          </div>
+        </div>
+        <div class="form-step" id="step-1">
+          <div class="question-title">¿Tiene claro que le aplicaron una sustancia extraña o desconocida en su cuerpo?
+          </div>
+          <div class="options-container" data-question-type="yes_no_maybe">
+            <button type="button" class="option-button" data-question="0" data-option="0">No</button>
+            <button type="button" class="option-button" data-question="0" data-option="1">No estoy muy seguro/a</button>
+            <button type="button" class="option-button" data-question="0" data-option="2">Sí</button>
+          </div>
+        </div>
+        <div class="form-step" id="step-2">
+          <div class="question-title">¿Hace cuánto tiempo le aplicaron la sustancia?</div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="1" data-option="0" value="0">
+              <span class="checkbox-label">Menos de 6 meses</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="1" data-option="1" value="1">
+              <span class="checkbox-label">Entre 6 meses y 2 años</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="1" data-option="2" value="2">
+              <span class="checkbox-label">Entre 2 y 5 años</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="1" data-option="3" value="3">
+              <span class="checkbox-label">Más de 5 años</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="1" data-option="4" value="4">
+              <span class="checkbox-label">No lo recuerdo con exactitud</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step" id="step-3">
+          <div class="question-title">¿Presenta dolor en la zona donde fue aplicada la sustancia?</div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="2" data-option="0" value="0">
+              <span class="checkbox-label">No</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="2" data-option="1" value="1">
+              <span class="checkbox-label">Ocasional</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="2" data-option="2" value="2">
+              <span class="checkbox-label">Frecuente</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="2" data-option="3" value="3">
+              <span class="checkbox-label">Constante</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step" id="step-4">
+          <div class="question-title">¿Ha notado inflamación persistente en la zona?</div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="3" data-option="0" value="0">
+              <span class="checkbox-label">No</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="3" data-option="1" value="1">
+              <span class="checkbox-label">Leve</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="3" data-option="2" value="2">
+              <span class="checkbox-label">Moderada</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="3" data-option="3" value="3">
+              <span class="checkbox-label">Severa</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step info-slide info-slide-has-bg" id="step-5" data-step-type="info"
+          data-bg-image="teimpoScore.jpg">
+          <div class="info-slide-inner">
+            <p class="info-slide-note">Para tener en cuenta</p>
+            <div class="info-slide-note-divider"></div>
+            <h2 class="info-slide-title">Los síntomas pueden aparecer muchos años después</h2>
+            <div class="info-slide-content">
+              <p><strong>Dato importante:</strong> En complicaciones por materiales de relleno permanentes (p. ej.,
+                silicona líquida o geles), hay reportes médicos de reacciones tardías incluso más de 10 años después de
+                la aplicación.</p>
+            </div>
+            <button type="button" class="btn btn-primary info-slide-continuar">Continuar</button>
+          </div>
+        </div>
+        <div class="form-step" id="step-6">
+          <div class="question-title">¿Ha sentido endurecimiento o formación de masas/nódulos en la zona?</div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="4" data-option="0" value="0">
+              <span class="checkbox-label">No</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="4" data-option="1" value="1">
+              <span class="checkbox-label">Pequeños</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="4" data-option="2" value="2">
+              <span class="checkbox-label">Múltiples/grandes</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step" id="step-7">
+          <div class="question-title">¿Ha tenido cambios de coloración en la piel (rojiza, violácea, oscura) en esa
+            zona?</div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="5" data-option="0" value="0">
+              <span class="checkbox-label">No</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="5" data-option="1" value="1">
+              <span class="checkbox-label">Leves</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="5" data-option="2" value="2">
+              <span class="checkbox-label">Notorios</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step" id="step-8">
+          <div class="question-title">¿Ha presentado salida de líquido, secreción o ulceraciones en la zona?</div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="6" data-option="0" value="0">
+              <span class="checkbox-label">No</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="6" data-option="1" value="1">
+              <span class="checkbox-label">Una vez</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="6" data-option="2" value="2">
+              <span class="checkbox-label">Varias veces</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step" id="step-9">
+          <div class="question-title">¿Ha presentado fatiga intensa que no mejora con el descanso?</div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="7" data-option="0" value="0">
+              <span class="checkbox-label">No</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="7" data-option="1" value="1">
+              <span class="checkbox-label">A veces</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="7" data-option="2" value="2">
+              <span class="checkbox-label">Frecuente</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="7" data-option="3" value="3">
+              <span class="checkbox-label">Siempre</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step info-slide info-slide-has-bg" id="step-10" data-step-type="info"
+          data-bg-image="migracionScore.jpg">
+          <div class="info-slide-inner">
+            <p class="info-slide-note">DATO IMPORTANTE</p>
+            <div class="info-slide-note-divider"></div>
+            <h2 class="info-slide-title">Migración: el material puede “moverse”</h2>
+            <div class="info-slide-content">
+              <p>Una de las complicaciones descritas con silicona líquida y algunos rellenos permanentes es la migración
+                a zonas cercanas o más lejanas, a veces acompañada de nódulos o deformidad.</p>
+            </div>
+            <button type="button" class="btn btn-primary info-slide-continuar">Continuar</button>
+          </div>
+        </div>
+        <div class="form-step" id="step-11">
+          <div class="question-title">¿Siente dolor muscular generalizado?</div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="8" data-option="0" value="0">
+              <span class="checkbox-label">No</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="8" data-option="1" value="1">
+              <span class="checkbox-label">Leve</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="8" data-option="2" value="2">
+              <span class="checkbox-label">Moderado</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="8" data-option="3" value="3">
+              <span class="checkbox-label">Severo</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step" id="step-12">
+          <div class="question-title">¿Tiene dolor articular frecuente?</div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="9" data-option="0" value="0">
+              <span class="checkbox-label">No</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="9" data-option="1" value="1">
+              <span class="checkbox-label">Ocasional</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="9" data-option="2" value="2">
+              <span class="checkbox-label">Frecuente</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="9" data-option="3" value="3">
+              <span class="checkbox-label">Diario</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step" id="step-13">
+          <div class="question-title">¿Ha experimentado caída de cabello inusual desde la aplicación?</div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="10" data-option="0" value="0">
+              <span class="checkbox-label">No</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="10" data-option="1" value="1">
+              <span class="checkbox-label">Leve</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="10" data-option="2" value="2">
+              <span class="checkbox-label">Moderada</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="10" data-option="3" value="3">
+              <span class="checkbox-label">Abundante</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step" id="step-14">
+          <div class="question-title">¿Ha notado problemas de memoria o concentración desde la aplicación?</div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="11" data-option="0" value="0">
+              <span class="checkbox-label">No</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="11" data-option="1" value="1">
+              <span class="checkbox-label">Leve</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="11" data-option="2" value="2">
+              <span class="checkbox-label">Moderado</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="11" data-option="3" value="3">
+              <span class="checkbox-label">Severo</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step info-slide info-slide-has-bg" id="step-15" data-step-type="info"
+          data-bg-image="cansancioScore.jpg">
+          <div class="info-slide-inner">
+            <p class="info-slide-note">EL SINDROME DE ASIA</p>
+            <div class="info-slide-note-divider"></div>
+            <div class="info-slide-content">
+              <p>En revisiones médicas sobre ASIA, los síntomas típicos que se repiten incluyen fatiga crónica, dolor
+                muscular, dolor articular, fiebre y dificultad cognitiva (memoria/concentración).</p>
+              <p>Por eso el cuestionario pregunta tanto por síntomas locales como sistémicos.</p>
+            </div>
+            <button type="button" class="btn btn-primary info-slide-continuar">Continuar</button>
+          </div>
+        </div>
+        <div class="form-step" id="step-16">
+          <div class="question-title">¿Tiene trastornos del sueño desde la aplicación?</div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="12" data-option="0" value="0">
+              <span class="checkbox-label">No</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="12" data-option="1" value="1">
+              <span class="checkbox-label">Ocasionales</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="12" data-option="2" value="2">
+              <span class="checkbox-label">Frecuentes</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="12" data-option="3" value="3">
+              <span class="checkbox-label">Severos</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step" id="step-17">
+          <div class="question-title">¿Ha tenido fiebre recurrente sin causa aparente desde la aplicación?</div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="13" data-option="0" value="0">
+              <span class="checkbox-label">No</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="13" data-option="1" value="1">
+              <span class="checkbox-label">Una vez</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="13" data-option="2" value="2">
+              <span class="checkbox-label">Varias veces</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step" id="step-18">
+          <div class="question-title">¿Le han diagnosticado alguna enfermedad autoinmune después de la aplicación?</div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="14" data-option="0" value="0">
+              <span class="checkbox-label">No</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="14" data-option="1" value="1">
+              <span class="checkbox-label">En estudio</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="14" data-option="2" value="2">
+              <span class="checkbox-label">Sí</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step" id="step-19">
+          <div class="question-title">¿Los síntomas han empeorado con el tiempo?</div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="15" data-option="0" value="0">
+              <span class="checkbox-label">No</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="15" data-option="1" value="1">
+              <span class="checkbox-label">Leve</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="15" data-option="2" value="2">
+              <span class="checkbox-label">Claro empeoramiento</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step info-slide info-slide-has-bg" id="step-20" data-step-type="info"
+          data-bg-image="riosScore.jpg">
+          <div class="info-slide-inner">
+            <p class="info-slide-note">SOBRE EL DOCTOR</p>
+            <div class="info-slide-note-divider"></div>
+            <div class="info-slide-content">
+              <p>El Dr. Carlos Alberto Ríos cuenta con más de 25 años de experiencia en el manejo y extracción de
+                biopolímeros. A lo largo de su trayectoria ha sido reconocido y galardonado a nivel internacional por su
+                labor médica y su compromiso con la seguridad y bienestar de sus pacientes.</p>
+              <p>En Cali, Colombia, ha desarrollado un centro altamente especializado, dedicado exclusivamente a la
+                atención integral de pacientes con complicaciones derivadas de biopolímeros. Este centro desarrolla
+                experiencia clínica, tecnología avanzada y un enfoque multidisciplinario para brindar diagnóstico
+                preciso, tratamiento seguro y acompañamiento continuo.</p>
+            </div>
+            <button type="button" class="btn btn-primary info-slide-continuar">Continuar</button>
+          </div>
+        </div>
+        <div class="form-step" id="step-21">
+          <div class="question-title">¿Ha necesitado hospitalización por complicaciones relacionadas con esta situación?
+          </div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="16" data-option="0" value="0">
+              <span class="checkbox-label">No</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="16" data-option="1" value="1">
+              <span class="checkbox-label">Una vez</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="16" data-option="2" value="2">
+              <span class="checkbox-label">Más de una vez</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step" id="step-22">
+          <div class="question-title">¿Le han recomendado cirugía o extracción del material?</div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="17" data-option="0" value="0">
+              <span class="checkbox-label">No</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="17" data-option="1" value="1">
+              <span class="checkbox-label">Recomendada pero no realizada</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="17" data-option="2" value="2">
+              <span class="checkbox-label">Ya realizada</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step" id="step-23">
+          <div class="question-title">¿Ha presentado migración del material a otras zonas del cuerpo?</div>
+          <div class="options-container" data-question-type="multiple_choice">
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="18" data-option="0" value="0">
+              <span class="checkbox-label">No</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="18" data-option="1" value="1">
+              <span class="checkbox-label">Sospecha</span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" class="checkbox-input" data-question="18" data-option="2" value="2">
+              <span class="checkbox-label">Confirmado por médico</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-step" id="step-24">
+          <div class="question-title">En una escala del 1 al 10, ¿qué tanto ha afectado esto tu calidad de vida? (1 =
+            mínimo, 10 = severo)</div>
+          <div class="options-container" data-question-type="scale_1_10">
+            <div class="slider-container" data-question="19" data-min="1" data-max="10" data-num-options="10">
+              <div class="slider-wrapper">
+                <input type="range" class="slider-input" id="slider-19" min="1" max="10" value="1" step="1">
+                <div class="slider-marks">
+                  <span class="slider-mark" data-value="1" data-index="0">1</span>
+                  <span class="slider-mark" data-value="2" data-index="1">2</span>
+                  <span class="slider-mark" data-value="3" data-index="2">3</span>
+                  <span class="slider-mark" data-value="4" data-index="3">4</span>
+                  <span class="slider-mark" data-value="5" data-index="4">5</span>
+                  <span class="slider-mark" data-value="6" data-index="5">6</span>
+                  <span class="slider-mark" data-value="7" data-index="6">7</span>
+                  <span class="slider-mark" data-value="8" data-index="7">8</span>
+                  <span class="slider-mark" data-value="9" data-index="8">9</span>
+                  <span class="slider-mark" data-value="10" data-index="9">10</span>
+                </div>
+                <div class="slider-labels">
+                  <div class="slider-label" data-value="1" data-index="0" style="display: block;">1</div>
+                  <div class="slider-label" data-value="2" data-index="1" style="display: none;">2</div>
+                  <div class="slider-label" data-value="3" data-index="2" style="display: none;">3</div>
+                  <div class="slider-label" data-value="4" data-index="3" style="display: none;">4</div>
+                  <div class="slider-label" data-value="5" data-index="4" style="display: none;">5</div>
+                  <div class="slider-label" data-value="6" data-index="5" style="display: none;">6</div>
+                  <div class="slider-label" data-value="7" data-index="6" style="display: none;">7</div>
+                  <div class="slider-label" data-value="8" data-index="7" style="display: none;">8</div>
+                  <div class="slider-label" data-value="9" data-index="8" style="display: none;">9</div>
+                  <div class="slider-label" data-value="10" data-index="9" style="display: none;">10</div>
+                </div>
+                <div class="slider-value-display">
+                  <span class="slider-current-value">1</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="button-container" id="buttonContainer" style="display: none;">
+        <button type="button" class="btn btn-primary" id="btnNext">Siguiente</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const preguntas = [{ "pregunta": "¿Tiene claro que le aplicaron una sustancia extraña o desconocida en su cuerpo?", "opciones": ["No", "No estoy muy seguro/a", "Sí"], "type": "yes_no_maybe", "index": 1, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Aún no es claro", "description": "Si no estás seguro/a de qué te aplicaron, es útil reunir información básica: lugar, fecha aproximada, y cualquier documento o mensaje. Esto ayuda a orientar la valoración médica y a decidir qué estudios podrían ser necesarios." } }, { "text": "No estoy muy seguro/a", "score_value": 0.6, "recommendation": { "title": "Sospecha parcial", "description": "Muchas personas no reciben información completa sobre el material aplicado. Si hay síntomas locales o generales, una consulta especializada puede aclarar la situación con examen físico y, si corresponde, imágenes o pruebas complementarias." } }, { "text": "Sí", "score_value": 1, "recommendation": { "title": "Exposición probable", "description": "Tener claridad sobre una sustancia desconocida permite evaluar riesgos de manera más directa. Si presentas síntomas, una valoración médica puede ayudar a identificar complicaciones locales y signos de inflamación sistémica." } }] }, { "pregunta": "¿Hace cuánto tiempo le aplicaron la sustancia?", "opciones": ["Menos de 6 meses", "Entre 6 meses y 2 años", "Entre 2 y 5 años", "Más de 5 años", "No lo recuerdo con exactitud"], "type": "multiple_choice", "index": 2, "opciones_completas": [{ "text": "Menos de 6 meses", "score_value": 0.2, "recommendation": { "title": "Periodo reciente", "description": "En los primeros meses pueden aparecer inflamación, dolor y cambios de la piel. Si los síntomas son persistentes o progresivos, conviene una valoración para descartar infección, reacción inflamatoria u otras complicaciones." } }, { "text": "Entre 6 meses y 2 años", "score_value": 0.5, "recommendation": { "title": "Riesgo de evolución", "description": "En este rango pueden aparecer nódulos, endurecimiento o síntomas generales que antes no existían. Un control médico puede identificar signos tempranos de complicación y orientar el manejo." } }, { "text": "Entre 2 y 5 años", "score_value": 0.7, "recommendation": { "title": "Posibles complicaciones tardías", "description": "Algunas complicaciones se manifiestan años después, incluyendo síntomas locales persistentes y signos sistémicos. Si notas empeoramiento, es razonable priorizar una valoración especializada." } }, { "text": "Más de 5 años", "score_value": 1, "recommendation": { "title": "Complicaciones de larga evolución", "description": "Con el tiempo puede aumentar el riesgo de inflamación crónica, migración del material y síntomas sistémicos. Una evaluación completa puede ayudar a definir la severidad y las opciones de tratamiento." } }, { "text": "No lo recuerdo con exactitud", "score_value": 0.6, "recommendation": { "title": "Fecha incierta", "description": "No recordar la fecha es común. Aun así, los síntomas actuales son la prioridad: si hay dolor, secreción, fiebre o empeoramiento, es recomendable valoración médica para determinar el siguiente paso." } }] }, { "pregunta": "¿Presenta dolor en la zona donde fue aplicada la sustancia?", "opciones": ["No", "Ocasional", "Frecuente", "Constante"], "type": "multiple_choice", "index": 3, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Sin dolor local", "description": "La ausencia de dolor es una señal favorable, pero no descarta otras complicaciones. Si hay cambios visibles o síntomas generales, conviene mantener seguimiento." } }, { "text": "Ocasional", "score_value": 3, "recommendation": { "title": "Dolor intermitente", "description": "El dolor ocasional puede relacionarse con inflamación leve o sensibilidad local. Si aumenta en frecuencia o intensidad, se recomienda evaluación para identificar su causa." } }, { "text": "Frecuente", "score_value": 6, "recommendation": { "title": "Dolor persistente", "description": "El dolor frecuente sugiere inflamación sostenida o reacción local. Una valoración puede ayudar a determinar si hay nódulos, migración u otras complicaciones asociadas." } }, { "text": "Constante", "score_value": 8, "recommendation": { "title": "Dolor constante", "description": "El dolor constante es una señal de alerta clínica que amerita evaluación prioritaria. Puede asociarse a inflamación importante, compromiso tisular o complicaciones que requieren manejo médico." } }] }, { "pregunta": "¿Ha notado inflamación persistente en la zona?", "opciones": ["No", "Leve", "Moderada", "Severa"], "type": "multiple_choice", "index": 4, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Sin inflamación evidente", "description": "No observar inflamación es positivo. Aun así, si existen otros síntomas locales o generales, una revisión médica puede orientar el riesgo real." } }, { "text": "Leve", "score_value": 3, "recommendation": { "title": "Inflamación leve", "description": "La inflamación leve puede ser intermitente y asociarse a irritación local. Si persiste o progresa, conviene una evaluación para descartar complicaciones." } }, { "text": "Moderada", "score_value": 6, "recommendation": { "title": "Inflamación moderada", "description": "La inflamación moderada sostenida puede indicar reacción inflamatoria crónica. Una valoración clínica puede ayudar a decidir si se requieren estudios por imágenes." } }, { "text": "Severa", "score_value": 8, "recommendation": { "title": "Inflamación severa", "description": "Inflamación severa es una señal de alarma, especialmente si hay dolor, calor local o cambios en la piel. Recomendable atención médica prioritaria." } }] }, { "pregunta": "¿Ha sentido endurecimiento o formación de masas/nódulos en la zona?", "opciones": ["No", "Pequeños", "Múltiples/grandes"], "type": "multiple_choice", "index": 5, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Sin nódulos aparentes", "description": "No detectar nódulos reduce la probabilidad de reacción local marcada. Aun así, cambios sutiles pueden requerir exploración clínica si hay síntomas." } }, { "text": "Pequeños", "score_value": 4, "recommendation": { "title": "Nódulos pequeños", "description": "Los nódulos pequeños pueden corresponder a inflamación localizada. Una valoración médica puede determinar su naturaleza y si hay signos de progresión." } }, { "text": "Múltiples/grandes", "score_value": 8, "recommendation": { "title": "Nódulos múltiples/grandes", "description": "La presencia de múltiples nódulos o masas grandes sugiere compromiso local significativo. Es recomendable evaluación especializada para estimar extensión y opciones de manejo." } }] }, { "pregunta": "¿Ha tenido cambios de coloración en la piel (rojiza, violácea, oscura) en esa zona?", "opciones": ["No", "Leves", "Notorios"], "type": "multiple_choice", "index": 6, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Sin cambios visibles", "description": "No hay señales cutáneas evidentes. Mantén vigilancia si aparece dolor, inflamación o sensibilidad, ya que los cambios pueden ser progresivos." } }, { "text": "Leves", "score_value": 3, "recommendation": { "title": "Cambios leves", "description": "Los cambios leves pueden relacionarse con irritación o inflamación superficial. Si aumentan o se acompañan de dolor, conviene valoración médica." } }, { "text": "Notorios", "score_value": 6, "recommendation": { "title": "Cambios notorios", "description": "Cambios notorios en la piel pueden indicar inflamación importante o compromiso de tejidos. Se recomienda evaluación prioritaria, especialmente si hay calor local o dolor constante." } }] }, { "pregunta": "¿Ha presentado salida de líquido, secreción o ulceraciones en la zona?", "opciones": ["No", "Una vez", "Varias veces"], "type": "multiple_choice", "index": 7, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Sin secreción", "description": "La ausencia de secreción es un buen signo. Si hay dolor o inflamación, aún puede existir reacción local; por eso se recomienda seguimiento si los síntomas persisten." } }, { "text": "Una vez", "score_value": 6, "recommendation": { "title": "Episodio aislado", "description": "Un episodio de secreción o ulceración puede asociarse a inflamación o infección. Es recomendable evaluación médica para descartar complicaciones que requieran tratamiento." } }, { "text": "Varias veces", "score_value": 10, "recommendation": { "title": "Alerta clínica", "description": "Secreción o ulceración recurrente es una señal de alarma que amerita valoración prioritaria. Puede indicar infección, reacción inflamatoria severa o compromiso tisular que requiere manejo especializado." } }] }, { "pregunta": "¿Ha presentado fatiga intensa que no mejora con el descanso?", "opciones": ["No", "A veces", "Frecuente", "Siempre"], "type": "multiple_choice", "index": 8, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Energía conservada", "description": "No reportar fatiga intensa es positivo. Si aparecen otros síntomas sistémicos, conviene valorarlos en conjunto para orientar el riesgo." } }, { "text": "A veces", "score_value": 3, "recommendation": { "title": "Fatiga ocasional", "description": "La fatiga ocasional puede tener múltiples causas. Si se acompaña de dolor muscular, articular o trastornos del sueño, puede ser útil una valoración médica integral." } }, { "text": "Frecuente", "score_value": 6, "recommendation": { "title": "Fatiga frecuente", "description": "La fatiga frecuente puede ser compatible con inflamación sistémica o trastornos asociados. Una evaluación puede orientar estudios y descartar otras causas." } }, { "text": "Siempre", "score_value": 8, "recommendation": { "title": "Fatiga marcada", "description": "Fatiga constante que no mejora con descanso es una señal importante. Se recomienda valoración médica para identificar causas inflamatorias, autoinmunes u otras condiciones tratables." } }] }, { "pregunta": "¿Siente dolor muscular generalizado?", "opciones": ["No", "Leve", "Moderado", "Severo"], "type": "multiple_choice", "index": 9, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Sin mialgias", "description": "No presentar dolor muscular generalizado reduce el componente sistémico. Mantén vigilancia si aparecen otros síntomas como fatiga, fiebre o dolor articular." } }, { "text": "Leve", "score_value": 3, "recommendation": { "title": "Mialgias leves", "description": "Dolores musculares leves pueden ser inespecíficos. Si son persistentes y se acompañan de fatiga o dolor articular, conviene valoración médica." } }, { "text": "Moderado", "score_value": 5, "recommendation": { "title": "Mialgias moderadas", "description": "Dolor muscular moderado y sostenido puede ser compatible con un proceso inflamatorio. Un enfoque clínico integral ayuda a orientar el diagnóstico diferencial." } }, { "text": "Severo", "score_value": 7, "recommendation": { "title": "Mialgias severas", "description": "Dolor muscular severo limita la funcionalidad y amerita evaluación. Es importante descartar causas inflamatorias y autoinmunes, especialmente si hay otros síntomas sistémicos." } }] }, { "pregunta": "¿Tiene dolor articular frecuente?", "opciones": ["No", "Ocasional", "Frecuente", "Diario"], "type": "multiple_choice", "index": 10, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Sin artralgias", "description": "La ausencia de dolor articular es favorable. Si aparece rigidez matutina, hinchazón o dolor persistente, conviene valorarlo a tiempo." } }, { "text": "Ocasional", "score_value": 3, "recommendation": { "title": "Artralgias ocasionales", "description": "El dolor articular ocasional puede tener múltiples causas. Si aumenta o se hace recurrente junto a fatiga, conviene evaluación clínica." } }, { "text": "Frecuente", "score_value": 6, "recommendation": { "title": "Artralgias frecuentes", "description": "Dolor articular frecuente puede sugerir inflamación sistémica. Un especialista puede orientar estudios y evaluar signos de enfermedad inflamatoria." } }, { "text": "Diario", "score_value": 8, "recommendation": { "title": "Artralgias diarias", "description": "Dolor articular diario afecta calidad de vida y requiere valoración médica. Es importante descartar procesos autoinmunes o inflamatorios y plantear manejo oportuno." } }] }, { "pregunta": "¿Ha experimentado caída de cabello inusual desde la aplicación?", "opciones": ["No", "Leve", "Moderada", "Abundante"], "type": "multiple_choice", "index": 11, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Sin caída notable", "description": "No reportar caída de cabello reduce un signo sistémico frecuente. Si aparecen otros síntomas generales, conviene valorarlos en conjunto." } }, { "text": "Leve", "score_value": 2, "recommendation": { "title": "Caída leve", "description": "La caída leve puede asociarse a estrés, cambios hormonales u otras causas. Si se acompaña de fatiga, dolor articular o problemas de piel, conviene evaluación." } }, { "text": "Moderada", "score_value": 4, "recommendation": { "title": "Caída moderada", "description": "Caída moderada y persistente puede ser un signo sistémico. Es recomendable valoración para descartar deficiencias y procesos inflamatorios." } }, { "text": "Abundante", "score_value": 6, "recommendation": { "title": "Caída abundante", "description": "Caída abundante es una señal importante, especialmente si coincide con fatiga y dolores. Se recomienda evaluación médica integral para orientar causas tratables." } }] }, { "pregunta": "¿Ha notado problemas de memoria o concentración desde la aplicación?", "opciones": ["No", "Leve", "Moderado", "Severo"], "type": "multiple_choice", "index": 12, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Cognición preservada", "description": "No reportar alteraciones cognitivas es favorable. Si aparecen fatiga intensa, dolor o trastornos del sueño, pueden influir en la concentración; conviene valorarlos." } }, { "text": "Leve", "score_value": 2, "recommendation": { "title": "Dificultades leves", "description": "Problemas leves de memoria o concentración pueden asociarse a fatiga, estrés o sueño. Si persisten o empeoran, conviene evaluación para descartar causas tratables." } }, { "text": "Moderado", "score_value": 4, "recommendation": { "title": "Dificultades moderadas", "description": "Alteraciones moderadas de memoria o concentración pueden ser parte de un cuadro sistémico. Una valoración médica ayuda a orientar estudios y manejo." } }, { "text": "Severo", "score_value": 6, "recommendation": { "title": "Dificultades severas", "description": "Problemas severos de memoria o concentración afectan la vida diaria y requieren evaluación. Es importante descartar causas inflamatorias, metabólicas o neurológicas." } }] }, { "pregunta": "¿Tiene trastornos del sueño desde la aplicación?", "opciones": ["No", "Ocasionales", "Frecuentes", "Severos"], "type": "multiple_choice", "index": 13, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Sueño adecuado", "description": "Dormir bien favorece la recuperación y reduce el impacto del estrés. Si aparecen otros síntomas sistémicos, mantén hábitos de sueño saludables." } }, { "text": "Ocasionales", "score_value": 2, "recommendation": { "title": "Trastornos ocasionales", "description": "Alteraciones ocasionales del sueño pueden deberse a dolor, ansiedad o estrés. Si se hacen frecuentes o se acompañan de fatiga marcada, conviene valoración." } }, { "text": "Frecuentes", "score_value": 4, "recommendation": { "title": "Trastornos frecuentes", "description": "Problemas frecuentes de sueño pueden agravar fatiga y dolor. Una evaluación integral puede orientar medidas de higiene del sueño y descartar causas médicas." } }, { "text": "Severos", "score_value": 6, "recommendation": { "title": "Trastornos severos", "description": "Trastornos severos del sueño afectan la calidad de vida y la recuperación. Se recomienda valoración médica para identificar causas y plantear tratamiento." } }] }, { "pregunta": "¿Ha tenido fiebre recurrente sin causa aparente desde la aplicación?", "opciones": ["No", "Una vez", "Varias veces"], "type": "multiple_choice", "index": 14, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Sin fiebre recurrente", "description": "No presentar fiebre recurrente es favorable. Si en el futuro aparece fiebre sin causa clara, conviene consultar para descartar infección o reacción inflamatoria." } }, { "text": "Una vez", "score_value": 4, "recommendation": { "title": "Un episodio de fiebre", "description": "Un episodio aislado de fiebre puede tener múltiples causas. Si se repite o se acompaña de otros síntomas sistémicos, es importante valoración médica." } }, { "text": "Varias veces", "score_value": 8, "recommendation": { "title": "Fiebre recurrente", "description": "Fiebre recurrente sin causa aparente es una señal de alarma. Se recomienda valoración médica urgente para descartar infección, reacción al material o proceso inflamatorio sistémico." } }] }, { "pregunta": "¿Le han diagnosticado alguna enfermedad autoinmune después de la aplicación?", "opciones": ["No", "En estudio", "Sí"], "type": "multiple_choice", "index": 15, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Sin diagnóstico autoinmune", "description": "No tener diagnóstico autoinmune posterior es favorable. Si hay síntomas sugestivos (fatiga, dolor articular, alteraciones cutáneas), conviene valoración para descartar o confirmar." } }, { "text": "En estudio", "score_value": 6, "recommendation": { "title": "Estudio en curso", "description": "Si hay sospecha de enfermedad autoinmune en estudio, es importante completar la evaluación y seguir las indicaciones del especialista. La asociación con biopolímeros debe ser valorada por el médico." } }, { "text": "Sí", "score_value": 10, "recommendation": { "title": "Diagnóstico autoinmune", "description": "Un diagnóstico autoinmune posterior a la aplicación requiere manejo especializado. Se recomienda seguimiento con reumatología o el especialista indicado y valorar con el médico la relación con el material aplicado." } }] }, { "pregunta": "¿Los síntomas han empeorado con el tiempo?", "opciones": ["No", "Leve", "Claro empeoramiento"], "type": "multiple_choice", "index": 16, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Sin progresión", "description": "La ausencia de empeoramiento es un signo favorable. Aun así, es útil mantener seguimiento si hubo aplicación de sustancia desconocida." } }, { "text": "Leve", "score_value": 4, "recommendation": { "title": "Progresión leve", "description": "Un empeoramiento leve sugiere evolución del proceso local o sistémico. Una valoración puede ayudar a detener la progresión y aliviar síntomas." } }, { "text": "Claro empeoramiento", "score_value": 8, "recommendation": { "title": "Progresión evidente", "description": "Empeoramiento claro es una señal importante que amerita evaluación prioritaria. Identificar la causa y la extensión ayuda a definir manejo y reducir complicaciones." } }] }, { "pregunta": "¿Ha necesitado hospitalización por complicaciones relacionadas con esta situación?", "opciones": ["No", "Una vez", "Más de una vez"], "type": "multiple_choice", "index": 17, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Sin hospitalizaciones", "description": "No haber requerido hospitalización es favorable. Sin embargo, si existen señales de alarma, una valoración especializada sigue siendo recomendable." } }, { "text": "Una vez", "score_value": 6, "recommendation": { "title": "Complicación significativa", "description": "Una hospitalización sugiere un evento clínico relevante. Es importante revisar causas, tratamientos previos y evolución para decidir el siguiente paso." } }, { "text": "Más de una vez", "score_value": 10, "recommendation": { "title": "Alta prioridad", "description": "Hospitalizaciones repetidas indican alta complejidad clínica. Se recomienda evaluación prioritaria con equipo especializado para plan diagnóstico y terapéutico integral." } }] }, { "pregunta": "¿Le han recomendado cirugía o extracción del material?", "opciones": ["No", "Recomendada pero no realizada", "Ya realizada"], "type": "multiple_choice", "index": 18, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Sin recomendación quirúrgica", "description": "No tener recomendación quirúrgica puede indicar un cuadro menos evidente o no valorado aún. Si hay síntomas persistentes, conviene una evaluación específica." } }, { "text": "Recomendada pero no realizada", "score_value": 6, "recommendation": { "title": "Valoración quirúrgica pendiente", "description": "Si ya se recomendó cirugía, es importante entender el motivo y el plan. Una segunda opinión especializada puede aclarar riesgos, beneficios y expectativas realistas." } }, { "text": "Ya realizada", "score_value": 4, "recommendation": { "title": "Seguimiento post-tratamiento", "description": "Tras una intervención, es clave el seguimiento clínico para evaluar mejoría y detectar síntomas persistentes. Si continúas con molestias, conviene reevaluación integral." } }] }, { "pregunta": "¿Ha presentado migración del material a otras zonas del cuerpo?", "opciones": ["No", "Sospecha", "Confirmado por médico"], "type": "multiple_choice", "index": 19, "opciones_completas": [{ "text": "No", "score_value": 0, "recommendation": { "title": "Sin migración aparente", "description": "No notar migración es positivo. Si hay nódulos, dolor o cambios en otras zonas, conviene valoración para descartar migración no evidente." } }, { "text": "Sospecha", "score_value": 5, "recommendation": { "title": "Posible migración", "description": "La migración puede manifestarse con bultos, dolor o cambios de forma en zonas cercanas o distantes. Una valoración clínica e imágenes pueden confirmar o descartar." } }, { "text": "Confirmado por médico", "score_value": 10, "recommendation": { "title": "Señal de alta complejidad", "description": "La migración confirmada sugiere compromiso extendido. Se recomienda evaluación especializada para definir severidad, riesgos y opciones de manejo." } }] }, { "pregunta": "En una escala del 1 al 10, ¿qué tanto ha afectado esto tu calidad de vida? (1 = mínimo, 10 = severo)", "opciones": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"], "type": "scale_1_10", "index": 20, "opciones_completas": [{ "text": "1", "score_value": 0.1, "recommendation": { "title": "Impacto mínimo", "description": "Si el impacto es mínimo, puede ser buen momento para una valoración preventiva y educación sobre señales de alarma. Así se detectan cambios a tiempo y se planifica seguimiento." } }, { "text": "2", "score_value": 0.2, "recommendation": { "title": "Impacto bajo", "description": "Un impacto bajo sugiere síntomas controlables, pero conviene vigilar evolución. Considera una consulta si aparecen nuevos síntomas o si los actuales aumentan." } }, { "text": "3", "score_value": 0.3, "recommendation": { "title": "Impacto leve", "description": "Un impacto leve puede relacionarse con molestias intermitentes. Un plan de evaluación puede ayudarte a entender causas y prevenir progresión." } }, { "text": "4", "score_value": 0.4, "recommendation": { "title": "Impacto leve-moderado", "description": "Cuando el impacto comienza a sentirse en actividades diarias, vale la pena una valoración más completa. El objetivo es identificar factores tratables y mejorar bienestar." } }, { "text": "5", "score_value": 0.5, "recommendation": { "title": "Impacto moderado", "description": "Impacto moderado sugiere necesidad de un plan de manejo. Una consulta especializada puede orientar estudios, opciones terapéuticas y seguimiento adecuado." } }, { "text": "6", "score_value": 0.6, "recommendation": { "title": "Impacto moderado-alto", "description": "Si el impacto es moderado-alto, suele existir una carga física o emocional significativa. Es recomendable valoración para definir prioridades de atención y tratamiento." } }, { "text": "7", "score_value": 0.7, "recommendation": { "title": "Impacto alto", "description": "Un impacto alto indica afectación clara de la vida diaria. Una evaluación integral puede ayudar a identificar complicaciones y construir un plan de manejo realista." } }, { "text": "8", "score_value": 0.8, "recommendation": { "title": "Impacto muy alto", "description": "Impacto muy alto sugiere necesidad de atención prioritaria. Es importante valorar tanto síntomas locales como sistémicos para tomar decisiones informadas." } }, { "text": "9", "score_value": 0.9, "recommendation": { "title": "Impacto severo", "description": "Impacto severo suele acompañarse de síntomas persistentes y limitantes. Se recomienda evaluación prioritaria con especialistas para definir el abordaje más seguro." } }, { "text": "10", "score_value": 1, "recommendation": { "title": "Impacto crítico", "description": "Si el impacto es crítico, es importante buscar valoración médica prioritaria. Un equipo especializado puede orientar el diagnóstico, aliviar síntomas y reducir riesgos de complicaciones." } }] }];
+    const totalSteps = 25;
+    const stepMeta = [{ "type": "cover" }, { "type": "question", "questionIndex": 0 }, { "type": "question", "questionIndex": 1 }, { "type": "question", "questionIndex": 2 }, { "type": "question", "questionIndex": 3 }, { "type": "info" }, { "type": "question", "questionIndex": 4 }, { "type": "question", "questionIndex": 5 }, { "type": "question", "questionIndex": 6 }, { "type": "question", "questionIndex": 7 }, { "type": "info" }, { "type": "question", "questionIndex": 8 }, { "type": "question", "questionIndex": 9 }, { "type": "question", "questionIndex": 10 }, { "type": "question", "questionIndex": 11 }, { "type": "info" }, { "type": "question", "questionIndex": 12 }, { "type": "question", "questionIndex": 13 }, { "type": "question", "questionIndex": 14 }, { "type": "question", "questionIndex": 15 }, { "type": "info" }, { "type": "question", "questionIndex": 16 }, { "type": "question", "questionIndex": 17 }, { "type": "question", "questionIndex": 18 }, { "type": "question", "questionIndex": 19 }];
+    const resultPageUrl = "results/index.html";
+    let currentStep = 0;
+    const progressTotalSteps = stepMeta.filter(s => s && s.type !== 'cover').length || totalSteps;
+    const respuestas = {
+      nombre: '',
+      correo: '',
+      preguntas: []
+    };
+
+    function updateProgress() {
+      const meta = stepMeta[currentStep];
+      const isCover = meta && meta.type === 'cover';
+      const progressTextEl = document.getElementById('progressText');
+      const progressBarContainerEl = document.getElementById('progressBarContainer');
+      const progressBarEl = document.getElementById('progressBar');
+
+      if (isCover) {
+        if (progressTextEl) progressTextEl.style.display = 'none';
+        if (progressBarContainerEl) progressBarContainerEl.style.display = 'none';
+        if (progressBarEl) progressBarEl.style.width = '0%';
+        return;
+      }
+
+      if (progressTextEl) progressTextEl.style.display = 'block';
+      if (progressBarContainerEl) progressBarContainerEl.style.display = 'block';
+
+      const completedNonCoverSteps = stepMeta
+        .slice(0, currentStep + 1)
+        .filter(s => s && s.type !== 'cover')
+        .length;
+      const progress = (completedNonCoverSteps / progressTotalSteps) * 100;
+      if (progressBarEl) progressBarEl.style.width = progress + '%';
+      if (progressTextEl) progressTextEl.textContent = `Paso ${completedNonCoverSteps} de ${progressTotalSteps}`;
+    }
+
+    function showStep(step) {
+      document.querySelectorAll('.form-step').forEach((el, index) => {
+        if (index === step) {
+          el.classList.add('active');
+        } else {
+          el.classList.remove('active');
+        }
+      });
+
+      // Fondo full-bleed SOLO si el paso activo lo define
+      const activeStepEl = document.querySelector('.form-step.active');
+      const bgImage = activeStepEl && activeStepEl.dataset ? activeStepEl.dataset.bgImage : null;
+      if (bgImage) {
+        document.body.classList.add('step-bg-active');
+        document.documentElement.style.setProperty('--active-step-bg-image', `url('${bgImage}')`);
+      } else {
+        document.body.classList.remove('step-bg-active');
+        document.documentElement.style.removeProperty('--active-step-bg-image');
+      }
+
+      const meta = stepMeta[step];
+      const isCover = meta && meta.type === 'cover';
+      var buttonContainer = document.getElementById('buttonContainer');
+      // Ocultamos los botones de navegación manual según la petición del usuario
+      if (buttonContainer) buttonContainer.style.display = 'none';
+      const nextBtnEl = document.getElementById('btnNext');
+      if (nextBtnEl) nextBtnEl.style.display = 'none';
+
+      updateProgress();
+    }
+
+    function validateStep(step) {
+      const meta = stepMeta[step];
+      if (!meta) return true;
+      if (meta.type === 'cover') return true;
+      if (meta.type === 'nombre') {
+        const nombre = document.getElementById('nombre').value.trim();
+        if (nombre.length < 2) {
+          showError('error-nombre');
+          return false;
+        }
+        hideError('error-nombre');
+        respuestas.nombre = nombre;
+        return true;
+      }
+      if (meta.type === 'correo') {
+        const correo = document.getElementById('correo').value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(correo)) {
+          showError('error-correo');
+          return false;
+        }
+        hideError('error-correo');
+        respuestas.correo = correo;
+        return true;
+      }
+      if (meta.type === 'info') return true;
+      // Validar preguntas
+      if (meta.type === 'question') {
+        const questionIndex = meta.questionIndex;
+        if (questionIndex >= 0 && questionIndex < preguntas.length) {
+          const question = preguntas[questionIndex];
+          const questionType = question.type || 'yes_no_maybe';
+
+          // Para selección múltiple (checkboxes), verificar que se haya seleccionado al menos una opción
+          if (questionType === 'multiple_choice') {
+            const checkboxes = document.querySelectorAll(`.checkbox-input[data-question="${questionIndex}"]`);
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            if (checkedCount === 0) {
+              alert('Por favor selecciona al menos una opción antes de continuar');
+              return false;
+            }
+            // Para checkboxes, ya se guardó en el event listener, solo verificar
+            if (!respuestas.preguntas[questionIndex] || !Array.isArray(respuestas.preguntas[questionIndex]) || respuestas.preguntas[questionIndex].length === 0) {
+              // Intentar obtener de los checkboxes marcados
+              const checkedBoxes = Array.from(checkboxes).filter(cb => cb.checked);
+              respuestas.preguntas[questionIndex] = [];
+              if (!respuestas.opciones_completas) {
+                respuestas.opciones_completas = [];
+              }
+              respuestas.opciones_completas[questionIndex] = [];
+              checkedBoxes.forEach(cb => {
+                const optionIndex = parseInt(cb.dataset.option);
+                if (question.opciones_completas && question.opciones_completas[optionIndex]) {
+                  respuestas.preguntas[questionIndex].push(question.opciones_completas[optionIndex].text);
+                  respuestas.opciones_completas[questionIndex].push(question.opciones_completas[optionIndex]);
+                }
+              });
+            }
+            return true;
+          }
+
+          // Para sliders, verificar que se haya seleccionado un valor
+          if (questionType && questionType.includes('scale')) {
+            const sliderContainer = document.querySelector(`.slider-container[data-question="${questionIndex}"]`);
+            if (sliderContainer) {
+              const slider = sliderContainer.querySelector('.slider-input');
+              if (!slider || !slider.value) {
+                alert('Por favor selecciona un valor antes de continuar');
+                return false;
+              }
+              // Para sliders, ya se guardó en updateSliderDisplay, solo verificar
+              if (!respuestas.preguntas[questionIndex]) {
+                // Intentar obtener del slider actual
+                const currentValue = parseInt(slider.value);
+                const optionIndex = currentValue - 1;
+                if (question.opciones_completas && question.opciones_completas[optionIndex]) {
+                  respuestas.preguntas[questionIndex] = question.opciones_completas[optionIndex].text;
+                  if (!respuestas.opciones_completas) {
+                    respuestas.opciones_completas = [];
+                  }
+                  respuestas.opciones_completas[questionIndex] = question.opciones_completas[optionIndex];
+                } else {
+                  alert('Por favor selecciona un valor válido antes de continuar');
+                  return false;
+                }
+              }
+              return true;
+            }
+          }
+
+          // Para campos de texto libre (textarea), obtener el valor
+          if (questionType === 'text') {
+            const textarea = document.querySelector(`textarea[data-question="${questionIndex}"]`);
+            if (textarea) {
+              const textValue = textarea.value.trim();
+              // Campo de texto es opcional, puede estar vacío
+              respuestas.preguntas[questionIndex] = textValue || '';
+              return true;
+            }
+            // Si no encuentra el textarea, permitir continuar (campo opcional)
+            respuestas.preguntas[questionIndex] = '';
+            return true;
+          }
+
+          // Para botones (yes_no, yes_no_maybe), verificar que se haya seleccionado una opción
+          if (!respuestas.preguntas[questionIndex]) {
+            alert('Por favor selecciona una opción antes de continuar');
+            return false;
+          }
+          return true;
+        }
+      }
+
+      return true;
+    }
+
+    function showError(errorId) {
+      const errorEl = document.getElementById(errorId);
+      if (errorEl) {
+        errorEl.classList.add('show');
+        const input = errorEl.previousElementSibling;
+        if (input) {
+          input.classList.add('error');
+        }
+      }
+    }
+
+    function hideError(errorId) {
+      const errorEl = document.getElementById(errorId);
+      if (errorEl) {
+        errorEl.classList.remove('show');
+        const input = errorEl.previousElementSibling;
+        if (input) {
+          input.classList.remove('error');
+        }
+      }
+    }
+
+    function nextStep() {
+      if (validateStep(currentStep)) {
+        if (currentStep < totalSteps - 1) {
+          currentStep++;
+          showStep(currentStep);
+        } else {
+          submitForm();
+        }
+      }
+    }
+
+    function previousStep() {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    }
+
+    function submitForm() {
+      // Guardar respuestas en JSON con información completa
+      const formData = {
+        timestamp: new Date().toISOString(),
+        nombre: respuestas.nombre,
+        correo: respuestas.correo,
+        respuestas: respuestas.preguntas.map((r, i) => {
+          const question = preguntas[i];
+          const resp = {
+            pregunta: question.pregunta,
+            respuesta: r,  // Puede ser string (yes/no/slider) o array (multiple_choice)
+            question_index: question.index || (i + 1)  // Usar index del JSON (1-based) o calcular
+          };
+          // Si hay opciones completas, agregar información adicional
+          // Para multiple_choice, opciones_completas será un array
+          if (respuestas.opciones_completas && respuestas.opciones_completas[i]) {
+            if (Array.isArray(respuestas.opciones_completas[i])) {
+              resp.opciones_completas = respuestas.opciones_completas[i];
+            } else {
+              resp.opcion_completa = respuestas.opciones_completas[i];
+            }
+          }
+          return resp;
+        })
+      };
+
+      // Guardar en localStorage
+      localStorage.setItem('form_responses', JSON.stringify(formData));
+
+      // Preparar datos para envío HTTP (función lista pero no ejecutada)
+      const httpData = JSON.stringify(formData);
+      console.log('Datos preparados para envío HTTP:', httpData);
+      // Para enviar: fetch(resultPageUrl, { method: 'POST', body: httpData, headers: {'Content-Type': 'application/json'} })
+
+      // Redirigir a página de resultados
+      if (resultPageUrl && resultPageUrl !== '#') {
+        // Opción 1: Redirigir con datos en localStorage (ya guardado arriba)
+        window.location.href = resultPageUrl;
+      } else {
+        alert('Formulario completado. Respuestas guardadas.\n\n' + JSON.stringify(formData, null, 2));
+      }
+    }
+
+    // Event listeners
+    document.getElementById('btnNext').addEventListener('click', nextStep);
+    document.querySelectorAll('.info-slide-continuar').forEach(function (btn) {
+      btn.addEventListener('click', nextStep);
+    });
+    document.querySelectorAll('.btn-cover-comenzar').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        nextStep();
+      });
+    });
+
+    // Función para actualizar slider display
+    function updateSliderDisplay(sliderContainer, value) {
+      const marks = sliderContainer.querySelectorAll('.slider-mark');
+      const labels = sliderContainer.querySelectorAll('.slider-label');
+      const valueDisplay = sliderContainer.querySelector('.slider-current-value');
+      const questionIndex = parseInt(sliderContainer.dataset.question);
+      const question = preguntas[questionIndex];
+
+      // Actualizar marcas activas
+      marks.forEach(mark => {
+        if (parseInt(mark.dataset.value) === value) {
+          mark.classList.add('active');
+        } else {
+          mark.classList.remove('active');
+        }
+      });
+
+      // Actualizar etiquetas activas - mostrar solo la activa
+      // Calcular qué opción corresponde al valor del slider
+      const minValue = parseInt(sliderContainer.dataset.min || 1);
+      const maxValue = parseInt(sliderContainer.dataset.max || 5);
+      const numOptions = labels.length;
+      let optionIndex;
+
+      if (maxValue === numOptions) {
+        optionIndex = value - minValue;
+      } else {
+        // Mapeo proporcional
+        const range = maxValue - minValue + 1;
+        const step = range / numOptions;
+        optionIndex = Math.min(Math.floor((value - minValue) / step), numOptions - 1);
+      }
+
+      labels.forEach((label, idx) => {
+        if (idx === optionIndex) {
+          label.classList.add('active');
+          label.style.display = 'block';
+          if (valueDisplay) {
+            valueDisplay.textContent = label.textContent.trim();
+          }
+        } else {
+          label.classList.remove('active');
+          label.style.display = 'none';
+        }
+      });
+
+      // Guardar respuesta basada en el valor del slider
+      if (question && question.opciones_completas) {
+        const sliderValue = parseInt(value);
+        const minValue = parseInt(sliderContainer.dataset.min || 1);
+        const maxValue = parseInt(sliderContainer.dataset.max || 5);
+        const numOptions = question.opciones_completas.length;
+
+        // Mapear valor del slider a índice de opción
+        // Si el slider va de 1-10 pero hay 5 opciones, mapear proporcionalmente
+        let optionIndex;
+        if (maxValue === numOptions) {
+          // Caso simple: slider coincide con número de opciones
+          optionIndex = sliderValue - minValue;
+        } else {
+          // Mapeo proporcional: distribuir valores del slider entre las opciones
+          const range = maxValue - minValue + 1;
+          const step = range / numOptions;
+          optionIndex = Math.min(Math.floor((sliderValue - minValue) / step), numOptions - 1);
+        }
+
+        if (optionIndex >= 0 && optionIndex < question.opciones_completas.length) {
+          const selectedOption = question.opciones_completas[optionIndex];
+          respuestas.preguntas[questionIndex] = selectedOption.text;
+          if (!respuestas.opciones_completas) {
+            respuestas.opciones_completas = [];
+          }
+          respuestas.opciones_completas[questionIndex] = selectedOption;
+        }
+      }
+    }
+
+    // Manejar selección de opciones (botones)
+    document.querySelectorAll('.option-button').forEach(button => {
+      button.addEventListener('click', function () {
+        const questionIndex = parseInt(this.dataset.question);
+        const optionIndex = parseInt(this.dataset.option);
+
+        // Deseleccionar otras opciones de la misma pregunta
+        document.querySelectorAll(`[data-question="${questionIndex}"][class*="option-button"]`).forEach(btn => {
+          btn.classList.remove('selected');
+        });
+
+        // Seleccionar esta opción
+        this.classList.add('selected');
+
+        // Guardar respuesta
+        const question = preguntas[questionIndex];
+        if (question && question.opciones_completas && question.opciones_completas[optionIndex]) {
+          respuestas.preguntas[questionIndex] = question.opciones_completas[optionIndex].text;
+          if (!respuestas.opciones_completas) {
+            respuestas.opciones_completas = [];
+          }
+          respuestas.opciones_completas[questionIndex] = question.opciones_completas[optionIndex];
+        } else {
+          respuestas.preguntas[questionIndex] = preguntas[questionIndex].opciones[optionIndex];
+        }
+        setTimeout(function () { nextStep(); }, 150);
+      });
+    });
+
+    // Manejar checkboxes (selección múltiple)
+    document.querySelectorAll('.checkbox-input').forEach(checkbox => {
+      checkbox.addEventListener('change', function () {
+        const questionIndex = parseInt(this.dataset.question);
+        const optionIndex = parseInt(this.dataset.option);
+        const question = preguntas[questionIndex];
+
+        // Inicializar array de respuestas para esta pregunta si no existe
+        if (!respuestas.preguntas[questionIndex] || !Array.isArray(respuestas.preguntas[questionIndex])) {
+          respuestas.preguntas[questionIndex] = [];
+          if (!respuestas.opciones_completas) {
+            respuestas.opciones_completas = [];
+          }
+          respuestas.opciones_completas[questionIndex] = [];
+        }
+
+        if (this.checked) {
+          // Agregar respuesta seleccionada
+          if (question && question.opciones_completas && question.opciones_completas[optionIndex]) {
+            const selectedOption = question.opciones_completas[optionIndex];
+            if (!respuestas.preguntas[questionIndex].includes(selectedOption.text)) {
+              respuestas.preguntas[questionIndex].push(selectedOption.text);
+              respuestas.opciones_completas[questionIndex].push(selectedOption);
+            }
+          } else {
+            const optionText = question ? question.opciones[optionIndex] : '';
+            if (optionText && !respuestas.preguntas[questionIndex].includes(optionText)) {
+              respuestas.preguntas[questionIndex].push(optionText);
+            }
+          }
+        } else {
+          // Remover respuesta deseleccionada
+          if (question && question.opciones_completas && question.opciones_completas[optionIndex]) {
+            const selectedOption = question.opciones_completas[optionIndex];
+            respuestas.preguntas[questionIndex] = respuestas.preguntas[questionIndex].filter(t => t !== selectedOption.text);
+            respuestas.opciones_completas[questionIndex] = respuestas.opciones_completas[questionIndex].filter(
+              opt => opt.text !== selectedOption.text
+            );
+          } else {
+            const optionText = question ? question.opciones[optionIndex] : '';
+            respuestas.preguntas[questionIndex] = respuestas.preguntas[questionIndex].filter(t => t !== optionText);
+          }
+        }
+        if (respuestas.preguntas[questionIndex] && respuestas.preguntas[questionIndex].length > 0) {
+          // Avance automático inmediato para checkboxes (los convierte en selección única)
+          setTimeout(function () { nextStep(); }, 150);
+        }
+      });
+    });
+
+    // Manejar sliders
+    document.querySelectorAll('.slider-input').forEach(slider => {
+      const sliderContainer = slider.closest('.slider-container');
+      const questionIndex = parseInt(sliderContainer.dataset.question);
+      const question = preguntas[questionIndex];
+
+      // Inicializar display
+      updateSliderDisplay(sliderContainer, parseInt(slider.value));
+
+      // Manejar cambios
+      slider.addEventListener('input', function () {
+        updateSliderDisplay(sliderContainer, parseInt(this.value));
+      });
+
+      // Al soltar el slider (change) o al hacer clic en una marca: guardar y avanzar
+      slider.addEventListener('change', function () {
+        updateSliderDisplay(sliderContainer, parseInt(this.value));
+        nextStep();
+      });
+      sliderContainer.querySelectorAll('.slider-mark').forEach(mark => {
+        mark.addEventListener('click', function () {
+          const value = parseInt(this.dataset.value);
+          slider.value = value;
+          updateSliderDisplay(sliderContainer, value);
+          slider.dispatchEvent(new Event('input'));
+          nextStep();
+        });
+      });
+    });
+
+    // Validación en tiempo real para campos de texto (solo si existen)
+    const nombreEl = document.getElementById('nombre');
+    if (nombreEl) {
+      nombreEl.addEventListener('blur', function () {
+        if (this.value.trim().length < 2) showError('error-nombre');
+        else hideError('error-nombre');
+      });
+    }
+    const correoEl = document.getElementById('correo');
+    if (correoEl) {
+      correoEl.addEventListener('blur', function () {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(this.value.trim())) showError('error-correo');
+        else hideError('error-correo');
+      });
+    }
+
+    // Inicializar
+    showStep(0);
+    updateProgress();
+  </script>
+</body>
+
+</html>
